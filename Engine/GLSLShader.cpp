@@ -7,6 +7,10 @@
 
 namespace Engine {
 
+	GLSLShader::GLSLShader() : GLSLShader("../Engine/Shaders/default.vert", "../Engine/Shaders/default.frag") {
+
+	}
+
 	GLSLShader::GLSLShader(const std::string &vertex_shader_file_path, const std::string &fragment_shader_file_path) :
 		vertex_shader_file_path_(vertex_shader_file_path),
 		fragment_shader_file_path_(fragment_shader_file_path),
@@ -22,7 +26,7 @@ namespace Engine {
 	bool GLSLShader::init() {
 		bool error = false;
 
-		bool program_created = createProgram(program_id_);
+		bool program_created = createProgram();
 		if (!program_created) {
 			ErrorLog::log("GLSLShader", "Failed to create shader program!");
 			error = true;
@@ -53,7 +57,7 @@ namespace Engine {
 		}
 
 		if (error) {
-			deleteProgram(program_id_);
+			glDeleteProgram(program_id_);
 			return false;
 		}
 
@@ -77,8 +81,8 @@ namespace Engine {
 	}
 
 	bool GLSLShader::link() {
-		attachShader(vertex_shader_id_);
-		attachShader(fragment_shader_id_);
+		glAttachShader(program_id_, vertex_shader_id_);
+		glAttachShader(program_id_, fragment_shader_id_);
 
 		glLinkProgram(program_id_);
 
@@ -92,19 +96,19 @@ namespace Engine {
 			std::vector<char> error_log(max_length);
 			glGetProgramInfoLog(program_id_, max_length, &max_length, &error_log[0]);
 
-			deleteProgram(program_id_);
-			deleteShader(vertex_shader_id_);
-			deleteShader(fragment_shader_id_);
+			glDeleteProgram(program_id_);
+			glDeleteShader(vertex_shader_id_);
+			glDeleteShader(fragment_shader_id_);
 
 			ErrorLog::log("GLSLShader", &error_log[0]);
 			return false;
 		}
 
-		detachShader(vertex_shader_id_);
-		detachShader(fragment_shader_id_);
+		glDetachShader(program_id_, vertex_shader_id_);
+		glDetachShader(program_id_, fragment_shader_id_);
 
-		deleteShader(vertex_shader_id_);
-		deleteShader(fragment_shader_id_);
+		glDeleteShader(vertex_shader_id_);
+		glDeleteShader(fragment_shader_id_);
 
 		return true;
 	}
@@ -114,9 +118,9 @@ namespace Engine {
 		num_attributes_++;
 	}
 
-	bool GLSLShader::createProgram(GLuint &program_id) {
-		if (program_id != 0) {
-			deleteProgram(program_id);
+	bool GLSLShader::createProgram() {
+		if (program_id_ != 0) {
+			glDeleteProgram(program_id_);
 		}
 
 		program_id_ = glCreateProgram();
@@ -124,30 +128,14 @@ namespace Engine {
 		return program_id_ != 0;
 	}
 
-	void GLSLShader::deleteProgram(GLuint &program_id) {
-		glDeleteProgram(program_id);
-	}
-
 	bool GLSLShader::createShader(GLuint &shader_id, GLenum shader_type) {
 		if (shader_id != 0) {
-			deleteShader(shader_id);
+			glDeleteShader(shader_id);
 		}
 
 		shader_id = glCreateShader(shader_type);
 
 		return shader_id != 0;
-	}
-
-	void GLSLShader::attachShader(GLuint & shader_id) {
-		glAttachShader(program_id_, shader_id);
-	}
-
-	void GLSLShader::deleteShader(GLuint &shader_id) {
-		glDeleteShader(shader_id);
-	}
-
-	void GLSLShader::detachShader(GLuint & shader_id) {
-		glDetachShader(program_id_, shader_id);
 	}
 
 	bool GLSLShader::compileShader(const std::string &shader_file_path, GLuint &shader_id) {
@@ -167,7 +155,7 @@ namespace Engine {
 			std::vector<char> error_log(max_length);
 			glGetShaderInfoLog(shader_id, max_length, &max_length, &error_log[0]);
 
-			deleteShader(shader_id);
+			glDeleteShader(shader_id);
 
 			ErrorLog::log("GLSLShader", &error_log[0]);
 			return false;

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroids", "Asteroids\Asteroids.vcxproj", "{35E91974-8F99-4947-A1F1-E549C70051D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45651DD9-225F-4C6F-AF90-4A9A7A5D9569} = {45651DD9-225F-4C6F-AF90-4A9A7A5D9569}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{45651DD9-225F-4C6F-AF90-4A9A7A5D9569}"
 EndProject

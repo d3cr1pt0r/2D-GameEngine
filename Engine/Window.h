@@ -18,6 +18,7 @@ namespace Engine {
 	public:
 		static SDL_Window *window_;
 		static SDL_Renderer *renderer_;
+		static SDL_GLContext context_;
 
 	private:
 		const char *title_;

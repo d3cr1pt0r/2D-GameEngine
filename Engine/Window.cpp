@@ -21,7 +21,7 @@ namespace Engine {
 
 	bool Window::init() {
 		// init window
-		window_ = SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+		window_ = SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
 		if (window_ == NULL) {
 			std::cout << "SDL failed to create window! SDL Error: " << SDL_GetError() << std::endl;

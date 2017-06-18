@@ -4,7 +4,7 @@
 #define MAX_BUTTONS		32
 
 #include <SDL.h>
-#include "Vector2f.h"
+#include <glm.hpp>
 
 namespace Engine {
 
@@ -28,8 +28,8 @@ namespace Engine {
 
 		static bool getQuitRequested();
 
-		static Vector2f getMousePosition();
-		static Vector2f getMouseDelta();
+		static glm::vec2 getMousePosition();
+		static glm::vec2 getMouseDelta();
 
 	private:
 		void updateLastKeys();
@@ -50,7 +50,7 @@ namespace Engine {
 		static int last_key_pressed_;
 		static int last_button_pressed_;
 
-		static Vector2f mouse_position_;
-		static Vector2f mouse_delta_;
+		static glm::vec2 mouse_position_;
+		static glm::vec2 mouse_delta_;
 	};
 }

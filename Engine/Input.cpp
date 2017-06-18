@@ -1,5 +1,6 @@
 #include "Input.h"
 #include <iostream>
+#include "Window.h"
 
 namespace Engine {
 
@@ -13,8 +14,8 @@ namespace Engine {
 	int Input::last_key_pressed_;
 	int Input::last_button_pressed_;
 
-	Vector2f Input::mouse_position_;
-	Vector2f Input::mouse_delta_;
+	glm::vec2 Input::mouse_position_;
+	glm::vec2 Input::mouse_delta_;
 
 	Input::Input() {}
 
@@ -43,10 +44,6 @@ namespace Engine {
 		updateLastKeys();
 		updateLastButtons();
 
-		//SDL_PumpEvents();
-		//const Uint8 *state = SDL_GetKeyboardState(NULL);
-		//std::cout << (int)state[SDL_SCANCODE_W] << std::endl;
-
 		while (SDL_PollEvent(&sdl_event_)) {
 			SDL_Scancode scancode = sdl_event_.key.keysym.scancode;
 			Uint8 button = sdl_event_.button.button;
@@ -65,8 +62,10 @@ namespace Engine {
 				buttons_[button] = false;
 				break;
 			case SDL_MOUSEMOTION:
-				mouse_position_.x_ = sdl_event_.motion.x;
-				mouse_position_.y_ = sdl_event_.motion.y;
+				mouse_position_.x = (float) sdl_event_.motion.x;
+				mouse_position_.y = Window::height_ - (float) sdl_event_.motion.y;
+				mouse_delta_.x = (float) sdl_event_.motion.xrel;
+				mouse_delta_.y = (float) sdl_event_.motion.yrel;
 				break;
 			case SDL_QUIT:
 				quit_requested_ = true;
@@ -119,12 +118,12 @@ namespace Engine {
 		return quit_requested_;
 	}
 
-	Vector2f Input::getMousePosition() {
+	glm::vec2 Input::getMousePosition() {
 		return mouse_position_;
 	}
 
-	Vector2f Input::getMouseDelta() {
-		return Vector2f(0, 0);
+	glm::vec2 Input::getMouseDelta() {
+		return glm::vec2(0, 0);
 	}
 
 	void Input::updateLastKeys() {

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-#include "ErrorLog.h"
+#include "Log.h"
 
 namespace Engine {
 
@@ -28,31 +28,31 @@ namespace Engine {
 
 		bool program_created = createProgram();
 		if (!program_created) {
-			ErrorLog::logError("GLSLShader", "Failed to create shader program!");
+			Log::logError("GLSLShader", "Failed to create shader program!");
 			error = true;
 		}
 
 		bool vertex_shader_created = createShader(vertex_shader_id_, GL_VERTEX_SHADER);
 		if (!vertex_shader_created) {
-			ErrorLog::logError("GLSLShader", "Failed to create vertex shader!");
+			Log::logError("GLSLShader", "Failed to create vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_created = createShader(fragment_shader_id_, GL_FRAGMENT_SHADER);
 		if (!fragment_shader_created) {
-			ErrorLog::logError("GLSLShader", "Failed to create fragment shader!");
+			Log::logError("GLSLShader", "Failed to create fragment shader!");
 			error = true;
 		}
 
 		bool vertex_shader_compiled = compileShader(vertex_shader_file_path_, vertex_shader_id_);
 		if (!vertex_shader_compiled) {
-			ErrorLog::logError("GLSLShader", "Failed to compile vertex shader!");
+			Log::logError("GLSLShader", "Failed to compile vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_compiled = compileShader(fragment_shader_file_path_, fragment_shader_id_);
 		if (!fragment_shader_compiled) {
-			ErrorLog::logError("GLSLShader", "Failed to compile fragment shader!");
+			Log::logError("GLSLShader", "Failed to compile fragment shader!");
 			error = true;
 		}
 
@@ -100,7 +100,7 @@ namespace Engine {
 			glDeleteShader(vertex_shader_id_);
 			glDeleteShader(fragment_shader_id_);
 
-			ErrorLog::logError("GLSLShader", &error_log[0]);
+			Log::logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
@@ -122,7 +122,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -133,7 +133,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -144,7 +144,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -155,7 +155,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -206,7 +206,7 @@ namespace Engine {
 
 			glDeleteShader(shader_id);
 
-			ErrorLog::logError("GLSLShader", &error_log[0]);
+			Log::logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
@@ -218,7 +218,7 @@ namespace Engine {
 
 		if (file.fail()) {
 			perror(file_path.c_str());
-			ErrorLog::logError("GLSLShader", "Failed to create ifstream");
+			Log::logError("GLSLShader", "Failed to create ifstream");
 
 			return "";
 		}

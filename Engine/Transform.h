@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector2f.h"
+#include <glm.hpp>
 
 namespace Engine {
 
@@ -7,12 +7,31 @@ namespace Engine {
 
 	public:
 		Transform();
-		Transform(const Vector2f &position_, const Vector2f &scale, const float &rotation);
+		Transform(const glm::vec3 &position_, const glm::vec3 &rotation, const glm::vec3 &scale);
 		~Transform();
 
-	public:
-		Vector2f position_;
-		Vector2f scale_;
-		float rotation_;
+		void setPosition(const glm::vec3 &position);
+		void setScale(const glm::vec3 &scale);
+		void setRotation(const glm::vec3 &rotation);
+
+		void move(const glm::vec3 &v);
+		void rotate(const glm::vec3 &v);
+		void scale(const glm::vec3 &v);
+
+		glm::vec3& getPosition();
+		glm::vec3& getScale();
+		glm::vec3& getRotation();
+
+		glm::mat4& getTransformMatrix();
+
+	private:
+		void recalculateTRS();
+
+	private:
+		glm::mat4 trs_matrix_;
+
+		glm::vec3 position_;
+		glm::vec3 rotation_;
+		glm::vec3 scale_;
 	};
 }

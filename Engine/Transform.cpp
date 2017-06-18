@@ -12,7 +12,9 @@ namespace Engine {
 		position_(position),
 		rotation_(rotation),
 		scale_(scale),
-		trs_matrix_(1.0f)
+		parent_(0),
+		trs_matrix_(1.0f),
+		identity_matrix_(1.0f)
 	{}
 
 
@@ -39,6 +41,14 @@ namespace Engine {
 		scale_ += v;
 	}
 
+	void Transform::addChild(Transform *transform) {
+		transform->setParent(this);
+	}
+
+	void Transform::setParent(Transform *transform) {
+		parent_ = transform;
+	}
+
 	void Transform::setScale(const glm::vec3 &scale) {
 		scale_ = scale;
 	}
@@ -55,16 +65,23 @@ namespace Engine {
 		return scale_;
 	}
 
-	glm::mat4& Transform::getTransformMatrix() {
+	glm::mat4& Transform::getModelMatrix() {
 		recalculateTRS();
 		return trs_matrix_;
 	}
 
+	glm::mat4& Transform::getParentModelMatrix() {
+		if (parent_ != 0) {
+			return parent_->getModelMatrix();
+		}
+		return identity_matrix_;
+	}
+
 	void Transform::recalculateTRS() {
-		glm::mat4 tm = glm::translate(position_);
-		glm::mat4 rm = glm::rotate(rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 sm = glm::scale(scale_);
+		glm::mat4 translation_matrix = glm::translate(position_);
+		glm::mat4 rotation_matrix = glm::rotate(rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 scale_matrix = glm::scale(scale_);
 		
-		trs_matrix_ = tm * rm * sm;
+		trs_matrix_ = getParentModelMatrix() * translation_matrix * rotation_matrix * scale_matrix;
 	}
 }

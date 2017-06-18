@@ -23,7 +23,7 @@ namespace Engine {
 		shader_.addAttribute("vertex_uv");
 		shader_.addAttribute("vertex_color");
 
-		mesh_.init();
+		mesh_.begin();
 
 		glm::vec3 half_scale = transform_.getScale() * 0.5f;
 
@@ -61,7 +61,7 @@ namespace Engine {
 		mesh_.colors_.push_back(glm::vec4(color_.r_, color_.g_, color_.b_, color_.a_));
 		mesh_.colors_.push_back(glm::vec4(color_.r_, color_.g_, color_.b_, color_.a_));
 
-		mesh_.build();
+		mesh_.end();
 	}
 
 	void Sprite::render() {
@@ -69,8 +69,8 @@ namespace Engine {
 
 		shader_.bind();
 
-		glm::mat4 model_matrix = transform_.getTransformMatrix();
-		glm::mat4 view_matrix = glm::inverse(camera->transform_.getTransformMatrix());
+		glm::mat4 model_matrix = transform_.getModelMatrix();
+		glm::mat4 view_matrix = glm::inverse(camera->transform_.getModelMatrix());
 		glm::mat4 projection_matrix = camera->getProjectionMatrix();
 
 		glm::mat4 mvp = projection_matrix * view_matrix * model_matrix;

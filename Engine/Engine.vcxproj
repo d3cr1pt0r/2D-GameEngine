@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CoreEngine.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -26,7 +28,6 @@
     <ClCompile Include="GLSLShader.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Manager.cpp" />
-    <ClCompile Include="RectObject.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SDL.cpp" />
@@ -35,6 +36,8 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Engine.h" />
@@ -43,7 +46,6 @@
     <ClInclude Include="GLSLShader.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Manager.h" />
-    <ClInclude Include="RectObject.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SDL.h" />

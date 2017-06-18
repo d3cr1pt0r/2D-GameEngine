@@ -4,7 +4,7 @@
 #include <glew.h>
 
 #include "Input.h"
-#include "ErrorLog.h"
+#include "Log.h"
 
 namespace Engine {
 	int Window::width_;
@@ -68,13 +68,7 @@ namespace Engine {
 		}
 	}
 
-	void Window::clear() {
-		glClearDepth(1.0);
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
-	void Window::render() {
+	void Window::swapBuffers() {
 		SDL_GL_SwapWindow(window_);
 	}
 

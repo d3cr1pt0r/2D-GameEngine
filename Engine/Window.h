@@ -11,8 +11,7 @@ namespace Engine {
 
 		bool init();
 		void update();
-		void clear();
-		void render();
+		void swapBuffers();
 		bool isOpen();
 		void destroy();
 

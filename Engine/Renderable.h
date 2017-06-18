@@ -1,5 +1,6 @@
 #pragma once
 #include <glew.h>
+#include <glm.hpp>
 #include "Transform.h"
 #include "Color.h"
 #include "GLSLShader.h"
@@ -11,11 +12,10 @@ namespace Engine {
 
 	public:
 		Renderable();
-		Renderable(const Engine::Vector2f &position, const Engine::Vector2f &scale, const Color &color);
+		Renderable(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale, const Color &color);
 		~Renderable();
 
 		void init();
-		void update();
 		void render();
 		void destroy();
 
@@ -24,7 +24,7 @@ namespace Engine {
 		Color color_;
 
 	private:
-		void generateQuad(float x, float y, float width, float height);
+		void generateQuad(const glm::vec2 &scale);
 
 	private:
 		GLuint vbo_id_ = 0;

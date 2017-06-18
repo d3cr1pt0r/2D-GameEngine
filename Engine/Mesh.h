@@ -12,8 +12,8 @@ namespace Engine {
 		Mesh();
 		~Mesh();
 
-		void init();
-		void build();
+		void begin();
+		void end();
 		void render();
 		void clear();
 		void destroy();
@@ -34,6 +34,8 @@ namespace Engine {
 		GLuint ibo_;
 		GLuint vao_;
 		GLuint vbo_;
+
+		bool initialized_;
 
 		std::vector<Vertex> vertex_data_;
 	};

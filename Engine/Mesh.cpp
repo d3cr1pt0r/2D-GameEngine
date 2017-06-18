@@ -3,18 +3,22 @@
 
 namespace Engine {
 
-	Mesh::Mesh() : ibo_(0), vao_(0), vbo_(0) {
+	Mesh::Mesh() : ibo_(0), vao_(0), vbo_(0), initialized_(false) {
 	}
 
 	Mesh::~Mesh() {
 		destroy();
 	}
 
-	void Mesh::init() {
-		createVertexArrayAndBuffer();
+	void Mesh::begin() {
+		if (!initialized_) {
+			createVertexArrayAndBuffer();
+			initialized_ = true;
+		}
+		clear();
 	}
 
-	void Mesh::build() {
+	void Mesh::end() {
 		buildVertexData();
 		uploadVertexData();
 	}

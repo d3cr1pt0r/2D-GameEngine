@@ -6,9 +6,6 @@
 class AsteroidsGame : public Engine::Game {
 
 public:
-	AsteroidsGame();
-	~AsteroidsGame();
-
 	void init() override;
 	void update(const float &delta_time) override;
 	void render() override;
@@ -17,6 +14,7 @@ public:
 private:
 	Engine::Camera camera_;
 	Engine::Sprite sprite_;
+	Engine::Sprite sprite2_;
 	bool drag_mode_ = false;
 
 };

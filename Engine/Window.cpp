@@ -4,17 +4,16 @@
 #include <glew.h>
 
 #include "Input.h"
+#include "ErrorLog.h"
 
 namespace Engine {
+	int Window::width_;
+	int Window::height_;
 
-	SDL_Window *Window::window_;
-	SDL_Renderer *Window::renderer_;
-	SDL_GLContext Window::context_;
-
-	Window::Window(const char *title, int width, int height) :
-		title_(title),
-		width_(width),
-		height_(height) {}
+	Window::Window(const char *title, int width, int height) : title_(title) {
+		width_ = width;
+		height_ = height;
+	}
 
 	Window::~Window() {
 	}
@@ -22,17 +21,9 @@ namespace Engine {
 	bool Window::init() {
 		// init window
 		window_ = SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-
+		
 		if (window_ == NULL) {
 			std::cout << "SDL failed to create window! SDL Error: " << SDL_GetError() << std::endl;
-			return false;
-		}
-
-		// init renderer
-		renderer_ = SDL_CreateRenderer(window_, -1, 0);
-
-		if (renderer_ == NULL) {
-			std::cout << "SDL failed to create renderer! SDL Error: " << SDL_GetError() << std::endl;
 			return false;
 		}
 
@@ -43,6 +34,8 @@ namespace Engine {
 			std::cout << "SDL failed to create OpenGL context! SDL Error: " << SDL_GetError() << std::endl;
 			return false;
 		}
+
+		std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
 		// disable deprecated functions
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -77,7 +70,7 @@ namespace Engine {
 
 	void Window::clear() {
 		glClearDepth(1.0);
-		glClearColor(0.1, 0.1, 0.1, 1.0);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 

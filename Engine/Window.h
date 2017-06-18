@@ -15,16 +15,16 @@ namespace Engine {
 		void render();
 		bool isOpen();
 		void destroy();
+
 	public:
-		static SDL_Window *window_;
-		static SDL_Renderer *renderer_;
-		static SDL_GLContext context_;
+		static int width_;
+		static int height_;
 
 	private:
-		const char *title_;
-		int width_;
-		int height_;
+		SDL_Window *window_;
+		SDL_GLContext context_;
 
+		const char *title_;
 		bool is_open_;
 
 	};

@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/Game.h>
-#include <Engine/Renderable.h>
 #include <Engine/Camera.h>
+#include <Engine/Sprite.h>
 
 class AsteroidsGame : public Engine::Game {
 
@@ -16,7 +16,7 @@ public:
 
 private:
 	Engine::Camera camera_;
-	Engine::Renderable renderable_;
+	Engine::Sprite sprite_;
 	bool drag_mode_ = false;
 
 };

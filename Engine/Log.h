@@ -4,7 +4,7 @@
 
 namespace Engine {
 
-	class ErrorLog {
+	class Log {
 
 	public:
 		inline static void logDebug(const std::string &tag, const std::string &log) {
@@ -15,6 +15,9 @@ namespace Engine {
 		}
 		inline static void logError(const std::string &tag, const std::string &log) {
 			std::cout << "ERROR: Engine<" << tag.c_str() << ">: " << log.c_str() << std::endl;
+		}
+		inline static void logFloat(const std::string &tag, const float &v) {
+			std::cout << "VECTOR: Engine<" << tag.c_str() << ">: " << v << std::endl;
 		}
 		inline static void logVector(const std::string &tag, const glm::vec2 &v) {
 			std::cout << "VECTOR: Engine<" << tag.c_str() << ">: " << "x:" << v.x << " y:" << v.y << std::endl;

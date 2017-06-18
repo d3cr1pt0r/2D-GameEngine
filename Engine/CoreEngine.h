@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Game.h"
+#include "Camera.h"
 
 namespace Engine {
 
@@ -23,6 +24,7 @@ namespace Engine {
 	private:
 		Window window_;
 		Input input_;
+		Camera *camera_;
 
 		double frames_per_second_;
 		double frames_per_second_limit_;

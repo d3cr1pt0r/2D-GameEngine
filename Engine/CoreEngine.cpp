@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "Manager.h"
 #include "Input.h"
+#include "Log.h"
 
 namespace Engine {
 	CoreEngine::CoreEngine(Game *game, const char *title, int width, int height, double frames_per_second) :
@@ -24,6 +25,8 @@ namespace Engine {
 		}
 
 		Manager::init();
+		game_->init();
+		camera_ = Manager::getInstance()->camera_manager_.getMainCamera();
 
 		return true;
 	}
@@ -41,8 +44,6 @@ namespace Engine {
 		double lag = 0;
 
 		frames_per_second_ = 0;
-
-		game_->init();
 
 		while (window_.isOpen()) {
 			should_render = false;
@@ -90,9 +91,14 @@ namespace Engine {
 	}
 
 	void CoreEngine::render() {
-		window_.clear();
+		if (camera_ == 0) {
+			Log::logError("CoreEngine", "No camera ready for rendering. Set main camera with Manager::getInstance()->camera_manager_.setMainCamera method!");
+			return;
+		}
+
+		camera_->clear();
 		game_->render();
-		window_.render();
+		window_.swapBuffers();
 	}
 
 	void CoreEngine::destroy() {

@@ -37,7 +37,7 @@ namespace Engine {
 		near_plane_ = near_plane;
 		far_plane_ = far_plane;
 
-		matrix_ = glm::perspective(fov_, 1.0f, near_plane_, far_plane_);
+		matrix_ = glm::perspective(fov_, width_ / height_, near_plane_, far_plane_);
 
 		setAsMainCamera();
 	}

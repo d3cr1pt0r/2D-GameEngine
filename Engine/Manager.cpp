@@ -1,5 +1,5 @@
 #include "Manager.h"
-#include "ErrorLog.h"
+#include "Log.h"
 
 namespace Engine {
 
@@ -11,7 +11,7 @@ namespace Engine {
 
 	void Manager::init() {
 		if (instance_ == 0) {
-			ErrorLog::logDebug("Manager", "initialized");
+			Log::logDebug("Manager", "initialized");
 			instance_ = new Manager();
 		}
 	}
@@ -22,7 +22,7 @@ namespace Engine {
 
 	Manager* Manager::getInstance() {
 		if (instance_ == 0) {
-			ErrorLog::logWarning("Manager", "Manager not initialized! Make sure you call Manager::init()");
+			Log::logWarning("Manager", "Manager not initialized! Make sure you call Manager::init()");
 		}
 
 		return instance_;

@@ -28,31 +28,31 @@ namespace Engine {
 
 		bool program_created = createProgram();
 		if (!program_created) {
-			ErrorLog::log("GLSLShader", "Failed to create shader program!");
+			ErrorLog::logError("GLSLShader", "Failed to create shader program!");
 			error = true;
 		}
 
 		bool vertex_shader_created = createShader(vertex_shader_id_, GL_VERTEX_SHADER);
 		if (!vertex_shader_created) {
-			ErrorLog::log("GLSLShader", "Failed to create vertex shader!");
+			ErrorLog::logError("GLSLShader", "Failed to create vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_created = createShader(fragment_shader_id_, GL_FRAGMENT_SHADER);
 		if (!fragment_shader_created) {
-			ErrorLog::log("GLSLShader", "Failed to create fragment shader!");
+			ErrorLog::logError("GLSLShader", "Failed to create fragment shader!");
 			error = true;
 		}
 
 		bool vertex_shader_compiled = compileShader(vertex_shader_file_path_, vertex_shader_id_);
 		if (!vertex_shader_compiled) {
-			ErrorLog::log("GLSLShader", "Failed to compile vertex shader!");
+			ErrorLog::logError("GLSLShader", "Failed to compile vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_compiled = compileShader(fragment_shader_file_path_, fragment_shader_id_);
 		if (!fragment_shader_compiled) {
-			ErrorLog::log("GLSLShader", "Failed to compile fragment shader!");
+			ErrorLog::logError("GLSLShader", "Failed to compile fragment shader!");
 			error = true;
 		}
 
@@ -83,7 +83,7 @@ namespace Engine {
 	bool GLSLShader::link() {
 		glAttachShader(program_id_, vertex_shader_id_);
 		glAttachShader(program_id_, fragment_shader_id_);
-
+		
 		glLinkProgram(program_id_);
 
 		GLuint success = 0;
@@ -100,7 +100,7 @@ namespace Engine {
 			glDeleteShader(vertex_shader_id_);
 			glDeleteShader(fragment_shader_id_);
 
-			ErrorLog::log("GLSLShader", &error_log[0]);
+			ErrorLog::logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
@@ -116,6 +116,55 @@ namespace Engine {
 	void GLSLShader::addAttribute(const std::string & attribute_name) {
 		glBindAttribLocation(program_id_, num_attributes_, attribute_name.c_str());
 		num_attributes_++;
+	}
+
+	void GLSLShader::setUniform(const std::string &uniform_name, const float &v) {
+		GLuint location;
+
+		if (!getUniformLocation(uniform_name, location)) {
+			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			return;
+		}
+
+		glUniform1f(location, v);
+	}
+
+	void GLSLShader::setUniform(const std::string &uniform_name, const glm::vec2 &v) {
+		GLuint location;
+
+		if (!getUniformLocation(uniform_name, location)) {
+			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			return;
+		}
+
+		glUniform2fv(location, 1, &(v[0]));
+	}
+
+	void GLSLShader::setUniform(const std::string &uniform_name, const glm::vec3 &v) {
+		GLuint location;
+
+		if (!getUniformLocation(uniform_name, location)) {
+			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			return;
+		}
+
+		glUniform3fv(location, 1, &(v[0]));
+	}
+
+	void GLSLShader::setUniform(const std::string &uniform_name, const glm::mat4 &v) {
+		GLuint location;
+
+		if (!getUniformLocation(uniform_name, location)) {
+			ErrorLog::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			return;
+		}
+
+		glUniformMatrix4fv(location, 1, GL_FALSE, &(v[0][0]));
+	}
+
+	bool GLSLShader::getUniformLocation(const std::string &uniform_name, GLuint &location) {
+		location = glGetUniformLocation(program_id_, uniform_name.c_str());
+		return location != GL_INVALID_INDEX;
 	}
 
 	bool GLSLShader::createProgram() {
@@ -157,7 +206,7 @@ namespace Engine {
 
 			glDeleteShader(shader_id);
 
-			ErrorLog::log("GLSLShader", &error_log[0]);
+			ErrorLog::logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
@@ -169,7 +218,7 @@ namespace Engine {
 
 		if (file.fail()) {
 			perror(file_path.c_str());
-			ErrorLog::log("GLSLShader", "Failed to create ifstream");
+			ErrorLog::logError("GLSLShader", "Failed to create ifstream");
 
 			return "";
 		}

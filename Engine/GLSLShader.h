@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <glew.h>
+#include <glm.hpp>
 
 namespace Engine {
 
@@ -16,12 +17,19 @@ namespace Engine {
 		void unbind();
 		void addAttribute(const std::string &attribute_name);
 
+		void setUniform(const std::string &uniform_name, const float &v);
+		void setUniform(const std::string &uniform_name, const glm::vec2 &v);
+		void setUniform(const std::string &uniform_name, const glm::vec3 &v);
+		void setUniform(const std::string &uniform_name, const glm::mat4 &v);
+
 	private:
 		bool link();
 		bool createProgram();
 		bool createShader(GLuint &shader_id, GLenum shader_type);
 		bool compileShader(const std::string &shader_file_path, GLuint &shader_id);
 		std::string readFile(const std::string &file_path);
+
+		bool getUniformLocation(const std::string &uniform_name, GLuint &location);
 
 	private:
 		const std::string vertex_shader_file_path_;

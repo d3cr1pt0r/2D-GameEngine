@@ -1,5 +1,6 @@
 #include "CoreEngine.h"
 #include "SDL.h"
+#include "Manager.h"
 #include "Input.h"
 
 namespace Engine {
@@ -15,12 +16,14 @@ namespace Engine {
 
 	bool CoreEngine::init() {
 		bool sdl_initialized = SDL::init();
-		bool display_initialized = window_.init();
+		bool window_initialized = window_.init();
 		bool input_initialized = input_.init();
 
-		if (!sdl_initialized || !display_initialized || !input_initialized) {
+		if (!sdl_initialized || !window_initialized || !input_initialized) {
 			return false;
 		}
+
+		Manager::init();
 
 		return true;
 	}
@@ -52,7 +55,7 @@ namespace Engine {
 			frame_counter += elapsed_time;
 
 			while (lag >= frame_time) {
-				update(frame_time);
+				update((float)frame_time);
 
 				should_render = true;
 				lag -= frame_time;
@@ -77,7 +80,7 @@ namespace Engine {
 	}
 
 	const float CoreEngine::getFramesPerSecond() const {
-		return frames_per_second_;
+		return (float) frames_per_second_;
 	}
 
 	void CoreEngine::update(const float &frame_time) {
@@ -96,5 +99,6 @@ namespace Engine {
 		window_.destroy();
 		game_->destroy();
 		SDL::destroy();
+		Manager::destroy();
 	}
 }

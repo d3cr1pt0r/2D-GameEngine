@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Manager.h"
+#include <glew.h>
 
 namespace Engine {
 
@@ -8,6 +9,7 @@ namespace Engine {
 
 	Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation) :
 		transform_(position, rotation, glm::vec3(1.0f)),
+		clear_color_(),
 		matrix_(),
 		fov_(60.0f),
 		width_(800.0f),
@@ -20,12 +22,20 @@ namespace Engine {
 	Camera::~Camera() {
 	}
 
-	void Camera::setToOrtographic(const float &width, const float &height, const float &scale) {
+	void Camera::clear() {
+		glClearDepth(1.0);
+		glClearColor(clear_color_.r_, clear_color_.g_, clear_color_.b_, clear_color_.a_);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Camera::setToOrtographic(const float &width, const float &height, const float &near_plane, const float &far_plane, const float &scale) {
 		width_ = width;
 		height_ = height;
+		near_plane_ = near_plane;
+		far_plane_ = far_plane;
 		scale_ = scale;
 
-		matrix_ = glm::ortho(0.0f, width_, 0.0f, height_);
+		matrix_ = glm::ortho(0.0f, width_, 0.0f, height_, near_plane_, far_plane_);
 
 		setAsMainCamera();
 	}

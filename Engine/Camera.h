@@ -2,6 +2,7 @@
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include "Transform.h"
+#include "Color.h"
 
 namespace Engine {
 
@@ -12,7 +13,9 @@ namespace Engine {
 		Camera(const glm::vec3 &position, const glm::vec3 &rotation);
 		~Camera();
 
-		void setToOrtographic(const float &width, const float &height, const float &scale);
+		void clear();
+
+		void setToOrtographic(const float &width, const float &height, const float &near_plane, const float &far_plane, const float &scale);
 		void setToPerspective(const float &width, const float &height, const float &fov, const float &near_plane, const float &far_plane);
 		void setAsMainCamera();
 
@@ -20,6 +23,7 @@ namespace Engine {
 
 	public:
 		Transform transform_;
+		Color clear_color_;
 
 	private:
 		glm::mat4 matrix_;

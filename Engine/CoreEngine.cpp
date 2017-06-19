@@ -1,15 +1,15 @@
 #include "CoreEngine.h"
 #include "SDL.h"
 #include "Manager.h"
-#include "Input.h"
 #include "Log.h"
 
 namespace Engine {
 	CoreEngine::CoreEngine(Game *game, const char *title, int width, int height, double frames_per_second) :
 		game_(game),
-		window_(title, width, height),
-		input_(),
-		frames_per_second_limit_(frames_per_second) {}
+		frames_per_second_limit_(frames_per_second),
+		title_(title),
+		width_(width),
+		height_(height) {}
 
 
 	CoreEngine::~CoreEngine() {
@@ -17,16 +17,19 @@ namespace Engine {
 
 	bool CoreEngine::init() {
 		bool sdl_initialized = SDL::init();
-		bool window_initialized = window_.init();
-		bool input_initialized = input_.init();
 
-		if (!sdl_initialized || !window_initialized || !input_initialized) {
+		if (!sdl_initialized) {
 			return false;
 		}
 
+		// initialize main manager
 		Manager::init();
+
+		// create main window
+		Manager::getInstance()->window_manager_->create(title_, width_, height_);
+
+		// after all managers are initialized, we can init our game
 		game_->init();
-		camera_ = Manager::getInstance()->camera_manager_.getMainCamera();
 
 		return true;
 	}
@@ -45,7 +48,7 @@ namespace Engine {
 
 		frames_per_second_ = 0;
 
-		while (window_.isOpen()) {
+		while (!Manager::getInstance()->input_manager_->getQuitRequested()) {
 			should_render = false;
 
 			current_time = SDL_GetTicks() * 0.001;
@@ -85,26 +88,24 @@ namespace Engine {
 	}
 
 	void CoreEngine::update(const float &frame_time) {
-		input_.update();
-		window_.update();
+		Manager::getInstance()->input_manager_->update();
 		game_->update(frame_time);
 	}
 
 	void CoreEngine::render() {
-		if (camera_ == 0) {
+		if (Manager::getInstance()->camera_manager_->getMainCamera() == 0) {
 			Log::logError("CoreEngine", "No camera ready for rendering. Set main camera with Manager::getInstance()->camera_manager_.setMainCamera method!");
 			return;
 		}
 
-		camera_->clear();
+		Manager::getInstance()->camera_manager_->getMainCamera()->clear();
 		game_->render();
-		window_.swapBuffers();
+		Manager::getInstance()->window_manager_->swapBuffers();
 	}
 
 	void CoreEngine::destroy() {
-		window_.destroy();
 		game_->destroy();
-		SDL::destroy();
 		Manager::destroy();
+		SDL::destroy();
 	}
 }

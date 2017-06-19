@@ -17,15 +17,19 @@ namespace Engine {
 
 		void setToOrtographic(const float &width, const float &height, const float &near_plane, const float &far_plane, const float &scale);
 		void setToPerspective(const float &width, const float &height, const float &fov, const float &near_plane, const float &far_plane);
-		void setAsMainCamera();
+
+		void setClearColor(const Color &color);
+		void setClearColor(const float &r, const float &g, const float &b, const float &a);
+
+		const Color& getClearColor() const;
 
 		glm::mat4 getProjectionMatrix();
 
 	public:
 		Transform transform_;
-		Color clear_color_;
 
 	private:
+		Color clear_color_;
 		glm::mat4 matrix_;
 
 		float width_;

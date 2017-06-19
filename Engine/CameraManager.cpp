@@ -1,11 +1,18 @@
 #include "CameraManager.h"
+#include "Log.h"
 
 namespace Engine {
 
-	CameraManager::CameraManager() : camera_(0) {
+	void CameraManager::init() {
+		Log::logDebug("CameraManager", "initialized");
+
+		default_camera_.setToOrtographic(800.0f, 600.0f, 0.0f, 100.0f, 1.0f);
+		default_camera_.setClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		setMainCamera(default_camera_);
 	}
 
-	CameraManager::~CameraManager() {
+	void CameraManager::destroy() {
+		Log::logDebug("CameraManager", "destroyed");
 	}
 
 	void Engine::CameraManager::setMainCamera(Camera &camera) {

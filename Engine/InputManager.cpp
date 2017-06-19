@@ -1,28 +1,13 @@
-#include "Input.h"
+#include "InputManager.h"
+#include "Manager.h"
+#include "Log.h"
 #include <iostream>
-#include "Window.h"
 
 namespace Engine {
 
-	bool Input::keys_[MAX_KEYS];
-	bool Input::keys_last_[MAX_KEYS];
+	void InputManager::init() {
+		Log::logDebug("InputManager", "initialized");
 
-	bool Input::buttons_[MAX_BUTTONS];
-	bool Input::buttons_last_[MAX_BUTTONS];
-
-	bool Input::quit_requested_;
-	int Input::last_key_pressed_;
-	int Input::last_button_pressed_;
-
-	glm::vec2 Input::mouse_position_;
-	glm::vec2 Input::mouse_delta_;
-
-	Input::Input() {}
-
-	Input::~Input() {
-	}
-
-	bool Input::init() {
 		for (int i = 0; i < MAX_KEYS; i++) {
 			keys_[i] = false;
 			keys_last_[i] = false;
@@ -36,17 +21,15 @@ namespace Engine {
 		quit_requested_ = false;
 		last_key_pressed_ = 0;
 		last_button_pressed_ = 0;
-
-		return true;
 	}
 
-	void Input::update() {
+	void InputManager::update() {
 		updateLastKeys();
 		updateLastButtons();
 
 		while (SDL_PollEvent(&sdl_event_)) {
 			SDL_Scancode scancode = sdl_event_.key.keysym.scancode;
-			Uint8 button = sdl_event_.button.button;
+			int button = (int) sdl_event_.button.button;
 
 			switch (sdl_event_.type) {
 			case SDL_KEYDOWN:
@@ -62,10 +45,10 @@ namespace Engine {
 				buttons_[button] = false;
 				break;
 			case SDL_MOUSEMOTION:
-				mouse_position_.x = (float) sdl_event_.motion.x;
-				mouse_position_.y = Window::height_ - (float) sdl_event_.motion.y;
-				mouse_delta_.x = (float) sdl_event_.motion.xrel;
-				mouse_delta_.y = (float) sdl_event_.motion.yrel;
+				mouse_position_.x = (float)sdl_event_.motion.x;
+				mouse_position_.y = Manager::getInstance()->window_manager_->getHeight() - (float)sdl_event_.motion.y;
+				mouse_delta_.x = (float)sdl_event_.motion.xrel;
+				mouse_delta_.y = (float)sdl_event_.motion.yrel;
 				break;
 			case SDL_QUIT:
 				quit_requested_ = true;
@@ -74,75 +57,75 @@ namespace Engine {
 		}
 	}
 
-	bool Input::destroy() {
-		return true;
+	void InputManager::destroy() {
+		Log::logDebug("InputManager", "destroyed");
 	}
 
-	bool Input::getKey(int keycode) {
+	bool InputManager::getKey(int keycode) {
 		SDL_assert(isKeyInRange(keycode));
 
 		return keys_[keycode];
 	}
 
-	bool Input::getKeyUp(int keycode) {
+	bool InputManager::getKeyUp(int keycode) {
 		SDL_assert(isKeyInRange(keycode));
 
 		return !keys_[keycode] && keys_last_[keycode];
 	}
 
-	bool Input::getKeyDown(int keycode) {
+	bool InputManager::getKeyDown(int keycode) {
 		SDL_assert(isKeyInRange(keycode));
 
 		return keys_[keycode] && !keys_last_[keycode];
 	}
 
-	bool Input::getButton(int button) {
+	bool InputManager::getButton(int button) {
 		SDL_assert(isButtonInRange(button));
 
 		return buttons_[button];
 	}
 
-	bool Input::getButtonUp(int button) {
+	bool InputManager::getButtonUp(int button) {
 		SDL_assert(isButtonInRange(button));
 
 		return !buttons_[button] && buttons_last_[button];
 	}
 
-	bool Input::getButtonDown(int button) {
+	bool InputManager::getButtonDown(int button) {
 		SDL_assert(isButtonInRange(button));
 
 		return buttons_[button] && !buttons_last_[button];
 	}
 
-	bool Input::getQuitRequested() {
+	bool InputManager::getQuitRequested() {
 		return quit_requested_;
 	}
 
-	glm::vec2 Input::getMousePosition() {
+	glm::vec2 InputManager::getMousePosition() {
 		return mouse_position_;
 	}
 
-	glm::vec2 Input::getMouseDelta() {
+	glm::vec2 InputManager::getMouseDelta() {
 		return glm::vec2(0, 0);
 	}
 
-	void Input::updateLastKeys() {
+	void InputManager::updateLastKeys() {
 		for (int i = 0; i < MAX_KEYS; i++) {
 			keys_last_[i] = keys_[i];
 		}
 	}
 
-	void Input::updateLastButtons() {
+	void InputManager::updateLastButtons() {
 		for (int i = 0; i < MAX_BUTTONS; i++) {
 			buttons_last_[i] = buttons_[i];
 		}
 	}
 
-	const bool Input::isKeyInRange(const int & key) {
-		return key > 0 && key < MAX_KEYS;
+	const bool InputManager::isKeyInRange(const int & key) {
+		return key >= 0 && key < MAX_KEYS;
 	}
 
-	const bool Input::isButtonInRange(const int & button) {
-		return button > 0 && button < MAX_BUTTONS;
+	const bool InputManager::isButtonInRange(const int & button) {
+		return button >= 0 && button < MAX_BUTTONS;
 	}
 }

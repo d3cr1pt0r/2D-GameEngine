@@ -1,5 +1,6 @@
 #pragma once
-#include <memory>
+#include "WindowManager.h"
+#include "InputManager.h"
 #include "CameraManager.h"
 
 namespace Engine {
@@ -12,7 +13,9 @@ namespace Engine {
 		static Manager* getInstance();
 
 	public:
-		CameraManager camera_manager_;
+		WindowManager *window_manager_;
+		InputManager *input_manager_;
+		CameraManager *camera_manager_;
 
 	private:
 		Manager();

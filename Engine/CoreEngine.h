@@ -1,6 +1,4 @@
 #pragma once
-#include "Window.h"
-#include "Input.h"
 #include "Game.h"
 #include "Camera.h"
 
@@ -22,13 +20,13 @@ namespace Engine {
 		void render();
 		void destroy();
 	private:
-		Window window_;
-		Input input_;
-		Camera *camera_;
+		Game *game_;
 
 		double frames_per_second_;
 		double frames_per_second_limit_;
 
-		Game *game_;
+		const char *title_;
+		int width_;
+		int height_;
 	};
 }

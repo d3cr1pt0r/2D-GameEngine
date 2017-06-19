@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -26,32 +27,33 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLSLShader.cpp" />
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GLSLShader.h" />
     <ClInclude Include="helper.h" />
-    <ClInclude Include="Input.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

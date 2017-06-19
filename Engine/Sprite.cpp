@@ -65,7 +65,7 @@ namespace Engine {
 	}
 
 	void Sprite::render() {
-		Camera *camera = Manager::getInstance()->camera_manager_.getMainCamera();
+		Camera *camera = Manager::getInstance()->camera_manager_->getMainCamera();
 
 		shader_.bind();
 

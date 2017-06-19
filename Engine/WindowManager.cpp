@@ -1,38 +1,37 @@
-#include "Window.h"
-
-#include <iostream>
+#include "WindowManager.h"
+#include "Log.h"
 #include <glew.h>
 
-#include "Input.h"
-#include "Log.h"
-
 namespace Engine {
-	int Window::width_;
-	int Window::height_;
 
-	Window::Window(const char *title, int width, int height) : title_(title) {
+	void WindowManager::init() {
+		Log::logDebug("WindowManager", "initialized");
+	}
+
+	void WindowManager::destroy() {
+		Log::logDebug("WindowManager", "destroyed");
+
+		SDL_GL_DeleteContext(sdl_glcontext_);
+		SDL_DestroyWindow(sdl_window_);
+	}
+
+	void WindowManager::create(const char *title, int width, int height) {
+		title_ = title;
 		width_ = width;
 		height_ = height;
-	}
 
-	Window::~Window() {
-	}
-
-	bool Window::init() {
 		// init window
-		window_ = SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-		
-		if (window_ == NULL) {
+		sdl_window_ = SDL_CreateWindow(title_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+
+		if (sdl_window_ == NULL) {
 			std::cout << "SDL failed to create window! SDL Error: " << SDL_GetError() << std::endl;
-			return false;
 		}
 
 		// init opengl context
-		context_ = SDL_GL_CreateContext(window_);
+		sdl_glcontext_ = SDL_GL_CreateContext(sdl_window_);
 
-		if (context_ == NULL) {
+		if (sdl_glcontext_ == NULL) {
 			std::cout << "SDL failed to create OpenGL context! SDL Error: " << SDL_GetError() << std::endl;
-			return false;
 		}
 
 		std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -53,31 +52,9 @@ namespace Engine {
 
 		if (error != GLEW_OK) {
 			std::cout << "Glew failed to initialize! GLEW Error: " << glewGetErrorString(error) << std::endl;
-			return false;
-		}
-
-		is_open_ = true;
-
-		return true;
-	}
-
-	void Window::update() {
-		if (Input::getQuitRequested()) {
-			is_open_ = false;
-			return;
 		}
 	}
-
-	void Window::swapBuffers() {
-		SDL_GL_SwapWindow(window_);
-	}
-
-	bool Window::isOpen() {
-		return is_open_;
-	}
-
-	void Window::destroy() {
-		SDL_GL_DeleteContext(context_);
-		SDL_DestroyWindow(window_);
+	void WindowManager::swapBuffers() {
+		SDL_GL_SwapWindow(sdl_window_);
 	}
 }

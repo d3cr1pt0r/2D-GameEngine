@@ -1,23 +1,26 @@
 #include "Camera.h"
 #include "Manager.h"
+#include "Log.h"
 #include <glew.h>
 
 namespace Engine {
 
-	Camera::Camera() : Camera(glm::vec3(1.0f), glm::vec3(0.0f)) {
+	Camera::Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {
 	}
 
 	Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation) :
 		transform_(position, rotation, glm::vec3(1.0f)),
 		clear_color_(),
 		matrix_(),
-		fov_(60.0f),
 		width_(800.0f),
 		height_(600.0f),
+		fov_(60.0f),
 		near_plane_(-0.01f),
 		far_plane_(100.0f),
 		scale_(1.0f)
-{}
+	{
+
+	}
 
 	Camera::~Camera() {
 	}
@@ -36,8 +39,6 @@ namespace Engine {
 		scale_ = scale;
 
 		matrix_ = glm::ortho(0.0f, width_, 0.0f, height_, near_plane_, far_plane_);
-
-		setAsMainCamera();
 	}
 
 	void Camera::setToPerspective(const float &width, const float &height, const float &fov, const float &near_plane, const float &far_plane) {
@@ -48,12 +49,21 @@ namespace Engine {
 		far_plane_ = far_plane;
 
 		matrix_ = glm::perspective(fov_, width_ / height_, near_plane_, far_plane_);
-
-		setAsMainCamera();
 	}
 
-	void Camera::setAsMainCamera() {
-		Manager::getInstance()->camera_manager_.setMainCamera(*this);
+	void Camera::setClearColor(const Color &color) {
+		clear_color_ = color;
+	}
+
+	void Camera::setClearColor(const float &r, const float &g, const float &b, const float &a) {
+		clear_color_.r_ = r;
+		clear_color_.g_ = g;
+		clear_color_.b_ = b;
+		clear_color_.a_ = a;
+	}
+
+	const Color& Camera::getClearColor() const {
+		return clear_color_;
 	}
 
 	glm::mat4 Camera::getProjectionMatrix() {

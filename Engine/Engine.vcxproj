@@ -28,6 +28,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLSLShader.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="IOManager.cpp" />
+    <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL.cpp" />
@@ -43,10 +45,11 @@
     <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Log.h" />
+    <ClInclude Include="IOManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GLSLShader.h" />
     <ClInclude Include="helper.h" />
+    <ClInclude Include="LogManager.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL.h" />

@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include <Engine/CoreEngine.h>
+#include <Engine/IOManager.h>
+
 #include "AsteroidsGame.h"
 
 int main(int argc, char *argv[]) {

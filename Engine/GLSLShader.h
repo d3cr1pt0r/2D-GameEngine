@@ -9,7 +9,7 @@ namespace Engine {
 
 	public:
 		GLSLShader();
-		GLSLShader(const std::string &vertex_shader_file_path, const std::string &fragment_shader_file_path);
+		GLSLShader(const char *vertex_shader_file_path, const char *fragment_shader_file_path);
 		~GLSLShader();
 
 		bool init();
@@ -26,14 +26,13 @@ namespace Engine {
 		bool link();
 		bool createProgram();
 		bool createShader(GLuint &shader_id, GLenum shader_type);
-		bool compileShader(const std::string &shader_file_path, GLuint &shader_id);
-		std::string readFile(const std::string &file_path);
+		bool compileShader(const char *shader_file_path, GLuint &shader_id);
 
 		bool getUniformLocation(const std::string &uniform_name, GLuint &location);
 
 	private:
-		const std::string vertex_shader_file_path_;
-		const std::string fragment_shader_file_path_;
+		const char *vertex_shader_file_path_;
+		const char *fragment_shader_file_path_;
 
 		GLuint program_id_;
 		GLuint vertex_shader_id_;

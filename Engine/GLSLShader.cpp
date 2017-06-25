@@ -3,7 +3,8 @@
 #include <fstream>
 #include <vector>
 
-#include "Log.h"
+#include "Manager.h"
+#include "IOManager.h"
 
 namespace Engine {
 
@@ -11,7 +12,7 @@ namespace Engine {
 
 	}
 
-	GLSLShader::GLSLShader(const std::string &vertex_shader_file_path, const std::string &fragment_shader_file_path) :
+	GLSLShader::GLSLShader(const char *vertex_shader_file_path, const char *fragment_shader_file_path) :
 		vertex_shader_file_path_(vertex_shader_file_path),
 		fragment_shader_file_path_(fragment_shader_file_path),
 		program_id_(0),
@@ -28,31 +29,31 @@ namespace Engine {
 
 		bool program_created = createProgram();
 		if (!program_created) {
-			Log::logError("GLSLShader", "Failed to create shader program!");
+			pLogManager->logError("GLSLShader", "Failed to create shader program!");
 			error = true;
 		}
 
 		bool vertex_shader_created = createShader(vertex_shader_id_, GL_VERTEX_SHADER);
 		if (!vertex_shader_created) {
-			Log::logError("GLSLShader", "Failed to create vertex shader!");
+			pLogManager->logError("GLSLShader", "Failed to create vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_created = createShader(fragment_shader_id_, GL_FRAGMENT_SHADER);
 		if (!fragment_shader_created) {
-			Log::logError("GLSLShader", "Failed to create fragment shader!");
+			pLogManager->logError("GLSLShader", "Failed to create fragment shader!");
 			error = true;
 		}
 
 		bool vertex_shader_compiled = compileShader(vertex_shader_file_path_, vertex_shader_id_);
 		if (!vertex_shader_compiled) {
-			Log::logError("GLSLShader", "Failed to compile vertex shader!");
+			pLogManager->logError("GLSLShader", "Failed to compile vertex shader!");
 			error = true;
 		}
 
 		bool fragment_shader_compiled = compileShader(fragment_shader_file_path_, fragment_shader_id_);
 		if (!fragment_shader_compiled) {
-			Log::logError("GLSLShader", "Failed to compile fragment shader!");
+			pLogManager->logError("GLSLShader", "Failed to compile fragment shader!");
 			error = true;
 		}
 
@@ -100,7 +101,7 @@ namespace Engine {
 			glDeleteShader(vertex_shader_id_);
 			glDeleteShader(fragment_shader_id_);
 
-			Log::logError("GLSLShader", &error_log[0]);
+			pLogManager->logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
@@ -122,7 +123,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -133,7 +134,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -144,7 +145,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -155,7 +156,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			Log::logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
 			return;
 		}
 
@@ -187,8 +188,8 @@ namespace Engine {
 		return shader_id != 0;
 	}
 
-	bool GLSLShader::compileShader(const std::string &shader_file_path, GLuint &shader_id) {
-		std::string shader_contetns = readFile(shader_file_path);
+	bool GLSLShader::compileShader(const char *shader_file_path, GLuint &shader_id) {
+		std::string shader_contetns = IOManager::readFile(shader_file_path);
 		const char* shader_contetns_ptr = shader_contetns.c_str();
 
 		glShaderSource(shader_id, 1, &shader_contetns_ptr, nullptr);
@@ -206,32 +207,10 @@ namespace Engine {
 
 			glDeleteShader(shader_id);
 
-			Log::logError("GLSLShader", &error_log[0]);
+			pLogManager->logError("GLSLShader", &error_log[0]);
 			return false;
 		}
 
 		return true;
-	}
-
-	std::string GLSLShader::readFile(const std::string & file_path) {
-		std::ifstream file(file_path);
-
-		if (file.fail()) {
-			perror(file_path.c_str());
-			Log::logError("GLSLShader", "Failed to create ifstream");
-
-			return "";
-		}
-
-		std::string file_contents = "";
-		std::string line;
-
-		while (std::getline(file, line)) {
-			file_contents += line + "\n";
-		}
-
-		file.close();
-
-		return file_contents;
 	}
 }

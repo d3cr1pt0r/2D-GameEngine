@@ -1,7 +1,6 @@
 #include "CoreEngine.h"
 #include "SDL.h"
 #include "Manager.h"
-#include "Log.h"
 
 namespace Engine {
 	CoreEngine::CoreEngine(Game *game, const char *title, int width, int height, double frames_per_second) :
@@ -26,7 +25,7 @@ namespace Engine {
 		Manager::init();
 
 		// create main window
-		Manager::getInstance()->window_manager_->create(title_, width_, height_);
+		pWindowManager->create(title_, width_, height_);
 
 		// after all managers are initialized, we can init our game
 		game_->init();
@@ -48,7 +47,7 @@ namespace Engine {
 
 		frames_per_second_ = 0;
 
-		while (!Manager::getInstance()->input_manager_->getQuitRequested()) {
+		while (!pInputManager->getQuitRequested()) {
 			should_render = false;
 
 			current_time = SDL_GetTicks() * 0.001;
@@ -88,19 +87,19 @@ namespace Engine {
 	}
 
 	void CoreEngine::update(const float &frame_time) {
-		Manager::getInstance()->input_manager_->update();
+		pInputManager->update();
 		game_->update(frame_time);
 	}
 
 	void CoreEngine::render() {
-		if (Manager::getInstance()->camera_manager_->getMainCamera() == 0) {
-			Log::logError("CoreEngine", "No camera ready for rendering. Set main camera with Manager::getInstance()->camera_manager_.setMainCamera method!");
+		if (pCameraManager->getMainCamera() == 0) {
+			pLogManager->logError("CoreEngine", "No camera ready for rendering. Set main camera with Manager::getInstance()->camera_manager_.setMainCamera method!");
 			return;
 		}
 
-		Manager::getInstance()->camera_manager_->getMainCamera()->clear();
+		pCameraManager->getMainCamera()->clear();
 		game_->render();
-		Manager::getInstance()->window_manager_->swapBuffers();
+		pWindowManager->swapBuffers();
 	}
 
 	void CoreEngine::destroy() {

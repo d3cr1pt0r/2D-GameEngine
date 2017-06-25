@@ -1,15 +1,15 @@
 #include "WindowManager.h"
-#include "Log.h"
+#include "Manager.h"
 #include <glew.h>
 
 namespace Engine {
 
 	void WindowManager::init() {
-		Log::logDebug("WindowManager", "initialized");
+		pLogManager->logDebug("WindowManager", "initialized");
 	}
 
 	void WindowManager::destroy() {
-		Log::logDebug("WindowManager", "destroyed");
+		pLogManager->logDebug("WindowManager", "destroyed");
 
 		SDL_GL_DeleteContext(sdl_glcontext_);
 		SDL_DestroyWindow(sdl_window_);
@@ -41,7 +41,7 @@ namespace Engine {
 
 		// set OpenGL version to 3.2
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 		// enable double buffering
 		// you may need to change this to 16 or 32 for your system

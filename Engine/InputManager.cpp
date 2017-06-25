@@ -1,12 +1,11 @@
 #include "InputManager.h"
 #include "Manager.h"
-#include "Log.h"
 #include <iostream>
 
 namespace Engine {
 
 	void InputManager::init() {
-		Log::logDebug("InputManager", "initialized");
+		pLogManager->logDebug("InputManager", "initialized");
 
 		for (int i = 0; i < MAX_KEYS; i++) {
 			keys_[i] = false;
@@ -46,7 +45,7 @@ namespace Engine {
 				break;
 			case SDL_MOUSEMOTION:
 				mouse_position_.x = (float)sdl_event_.motion.x;
-				mouse_position_.y = Manager::getInstance()->window_manager_->getHeight() - (float)sdl_event_.motion.y;
+				mouse_position_.y = pWindowManager->getHeight() - (float)sdl_event_.motion.y;
 				mouse_delta_.x = (float)sdl_event_.motion.xrel;
 				mouse_delta_.y = (float)sdl_event_.motion.yrel;
 				break;
@@ -58,7 +57,7 @@ namespace Engine {
 	}
 
 	void InputManager::destroy() {
-		Log::logDebug("InputManager", "destroyed");
+		pLogManager->logDebug("InputManager", "destroyed");
 	}
 
 	bool InputManager::getKey(int keycode) {

@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "Log.h"
+#include "Manager.h"
 
 namespace Engine {
 
@@ -41,11 +41,15 @@ namespace Engine {
 	void Mesh::destroy() {
 		clear();
 
-		if (vao_ != 0) {
-			glDeleteVertexArrays(1, &vao_);
-		}
 		if (vbo_ != 0) {
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glDeleteBuffers(1, &vbo_);
+			vbo_ = 0;
+		}
+		if (vao_ != 0) {
+			glBindVertexArray(0);
+			glDeleteVertexArrays(1, &vao_);
+			vao_ = 0;
 		}
 	}
 
@@ -53,13 +57,11 @@ namespace Engine {
 		if (vao_ == 0) {
 			glGenVertexArrays(1, &vao_);
 		}
-
 		glBindVertexArray(vao_);
 
 		if (vbo_ == 0) {
 			glGenBuffers(1, &vbo_);
 		}
-
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
 		// position
@@ -78,7 +80,18 @@ namespace Engine {
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
 
+
+		// unbind vao
 		glBindVertexArray(0);
+
+		// disable vertex attrib arrays
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
+
+		// unbind vbo
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void Mesh::buildVertexData() {
@@ -86,11 +99,11 @@ namespace Engine {
 		bool size_check = normals_.size() == size && uvs_.size() == size && colors_.size() == size;
 
 		if (!size_check) {
-			Log::logError("Mesh", "Vertex data lengths don't match. Make sure vertices, normals, uvs and colors are the same size!");
-			Log::logFloat("Mesh:vertices_size", (float) vertices_.size());
-			Log::logFloat("Mesh:normals_size", (float) normals_.size());
-			Log::logFloat("Mesh:uvs_size", (float) uvs_.size());
-			Log::logFloat("Mesh:colors_size", (float) colors_.size());
+			pLogManager->logError("Mesh", "Vertex data lengths don't match. Make sure vertices, normals, uvs and colors are the same size!");
+			pLogManager->logFloat("Mesh:vertices_size", (float) vertices_.size());
+			pLogManager->logFloat("Mesh:normals_size", (float) normals_.size());
+			pLogManager->logFloat("Mesh:uvs_size", (float) uvs_.size());
+			pLogManager->logFloat("Mesh:colors_size", (float) colors_.size());
 			return;
 		}
 
@@ -123,7 +136,7 @@ namespace Engine {
 	void Mesh::uploadVertexData() {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
-		glBufferData(GL_ARRAY_BUFFER, vertex_data_.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertex_data_.size() * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertex_data_.size() * sizeof(Vertex), vertex_data_.data());
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

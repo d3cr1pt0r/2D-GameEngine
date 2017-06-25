@@ -1,6 +1,5 @@
 #include "Sprite.h"
 #include "Manager.h"
-#include "Camera.h"
 #include <glm.hpp>
 
 namespace Engine {
@@ -65,13 +64,11 @@ namespace Engine {
 	}
 
 	void Sprite::render() {
-		Camera *camera = Manager::getInstance()->camera_manager_->getMainCamera();
-
 		shader_.bind();
 
 		glm::mat4 model_matrix = transform_.getModelMatrix();
-		glm::mat4 view_matrix = glm::inverse(camera->transform_.getModelMatrix());
-		glm::mat4 projection_matrix = camera->getProjectionMatrix();
+		glm::mat4 view_matrix = pCameraManager->getMainCamera()->getInverseTransformMatrix();
+		glm::mat4 projection_matrix = pCameraManager->getMainCamera()->getProjectionMatrix();
 
 		glm::mat4 mvp = projection_matrix * view_matrix * model_matrix;
 

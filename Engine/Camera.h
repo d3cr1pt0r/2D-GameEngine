@@ -24,6 +24,7 @@ namespace Engine {
 		const Color& getClearColor() const;
 
 		glm::mat4 getProjectionMatrix();
+		glm::mat4 getInverseTransformMatrix();
 
 	public:
 		Transform transform_;

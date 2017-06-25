@@ -1,6 +1,5 @@
 #include "Camera.h"
 #include "Manager.h"
-#include "Log.h"
 #include <glew.h>
 
 namespace Engine {
@@ -68,5 +67,9 @@ namespace Engine {
 
 	glm::mat4 Camera::getProjectionMatrix() {
 		return matrix_;
+	}
+
+	glm::mat4 Camera::getInverseTransformMatrix() {
+		return glm::inverse(transform_.getModelMatrix());
 	}
 }

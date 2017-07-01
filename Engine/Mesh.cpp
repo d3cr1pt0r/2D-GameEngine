@@ -3,7 +3,8 @@
 
 namespace Engine {
 
-	Mesh::Mesh() : ibo_(0), vao_(0), vbo_(0), initialized_(false) {
+	Mesh::Mesh() : mesh_resource_() {
+
 	}
 
 	Mesh::~Mesh() {
@@ -11,22 +12,21 @@ namespace Engine {
 	}
 
 	void Mesh::begin() {
-		if (!initialized_) {
-			createVertexArrayAndBuffer();
-			initialized_ = true;
-		}
 		clear();
+		mesh_resource_.init();
 	}
 
 	void Mesh::end() {
 		buildVertexData();
-		uploadVertexData();
+		mesh_resource_.upload(vertex_data_);
 	}
 
 	void Mesh::render() {
-		glBindVertexArray(vao_);
+		mesh_resource_.bindVAO();
+
 		glDrawArrays(GL_TRIANGLES, 0, vertex_data_.size());
-		glBindVertexArray(0);
+		
+		mesh_resource_.unbindVAO();
 	}
 
 	void Mesh::clear() {
@@ -40,58 +40,7 @@ namespace Engine {
 
 	void Mesh::destroy() {
 		clear();
-
-		if (vbo_ != 0) {
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glDeleteBuffers(1, &vbo_);
-			vbo_ = 0;
-		}
-		if (vao_ != 0) {
-			glBindVertexArray(0);
-			glDeleteVertexArrays(1, &vao_);
-			vao_ = 0;
-		}
-	}
-
-	void Mesh::createVertexArrayAndBuffer() {
-		if (vao_ == 0) {
-			glGenVertexArrays(1, &vao_);
-		}
-		glBindVertexArray(vao_);
-
-		if (vbo_ == 0) {
-			glGenBuffers(1, &vbo_);
-		}
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-
-		// position
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position_));
-
-		// normal
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
-
-		// uv
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv_));
-
-		// color
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
-
-
-		// unbind vao
-		glBindVertexArray(0);
-
-		// disable vertex attrib arrays
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
-		glDisableVertexAttribArray(3);
-
-		// unbind vbo
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		mesh_resource_.destroy();
 	}
 
 	void Mesh::buildVertexData() {
@@ -131,14 +80,5 @@ namespace Engine {
 
 			vertex_data_.push_back(vertex);
 		}
-	}
-
-	void Mesh::uploadVertexData() {
-		glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-
-		glBufferData(GL_ARRAY_BUFFER, vertex_data_.size() * sizeof(Vertex), nullptr, GL_STATIC_DRAW);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vertex_data_.size() * sizeof(Vertex), vertex_data_.data());
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

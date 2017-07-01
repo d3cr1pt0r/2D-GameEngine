@@ -2,7 +2,7 @@
 #include "Transform.h"
 #include "Mesh.h"
 #include "Color.h"
-#include "GLSLShader.h"
+#include "Material.h"
 
 namespace Engine {
 
@@ -22,7 +22,7 @@ namespace Engine {
 
 	private:
 		Mesh mesh_;
-		GLSLShader shader_;
+		Material material_;
 	};
 }
 

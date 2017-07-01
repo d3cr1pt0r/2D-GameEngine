@@ -5,14 +5,14 @@
 
 namespace Engine {
 
-	class GLSLShader {
+	class Shader {
 
 	public:
-		GLSLShader();
-		GLSLShader(const char *vertex_shader_file_path, const char *fragment_shader_file_path);
-		~GLSLShader();
+		Shader(const char *vertex_shader_file_path, const char *fragment_shader_file_path);
+		~Shader();
 
 		bool init();
+		void destroy();
 		void bind();
 		void unbind();
 		void addAttribute(const std::string &attribute_name);

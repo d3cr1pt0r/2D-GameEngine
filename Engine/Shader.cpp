@@ -1,4 +1,4 @@
-#include "GLSLShader.h"
+#include "Shader.h"
 
 #include <fstream>
 #include <vector>
@@ -8,11 +8,7 @@
 
 namespace Engine {
 
-	GLSLShader::GLSLShader() : GLSLShader("../Engine/Shaders/default.vert", "../Engine/Shaders/default.frag") {
-
-	}
-
-	GLSLShader::GLSLShader(const char *vertex_shader_file_path, const char *fragment_shader_file_path) :
+	Shader::Shader(const char *vertex_shader_file_path, const char *fragment_shader_file_path) :
 		vertex_shader_file_path_(vertex_shader_file_path),
 		fragment_shader_file_path_(fragment_shader_file_path),
 		program_id_(0),
@@ -21,10 +17,10 @@ namespace Engine {
 		num_attributes_(0)
 	{}
 
-	GLSLShader::~GLSLShader() {
+	Shader::~Shader() {
 	}
 
-	bool GLSLShader::init() {
+	bool Shader::init() {
 		bool error = false;
 
 		bool program_created = createProgram();
@@ -65,7 +61,30 @@ namespace Engine {
 		return link();
 	}
 
-	void GLSLShader::bind() {
+	void Shader::destroy() {
+		if (program_id_ == 0) {
+			pLogManager->logError("Shader", "Failed to destroy shader, program ID is 0");
+			return;
+		}
+
+		if (vertex_shader_id_ == 0) {
+			pLogManager->logError("Shader", "Failed to destroy shader, vertex shader ID is 0");
+			return;
+		}
+
+		if (fragment_shader_id_ == 0) {
+			pLogManager->logError("Shader", "Failed to destroy shader, fragment shader ID is 0");
+			return;
+		}
+
+		unbind();
+
+		glDeleteProgram(program_id_);
+		glDeleteShader(vertex_shader_id_);
+		glDeleteShader(fragment_shader_id_);
+	}
+
+	void Shader::bind() {
 		glUseProgram(program_id_);
 
 		for (int i = 0; i < num_attributes_; i++) {
@@ -73,7 +92,7 @@ namespace Engine {
 		}
 	}
 
-	void GLSLShader::unbind() {
+	void Shader::unbind() {
 		glUseProgram(0);
 
 		for (int i = 0; i < num_attributes_; i++) {
@@ -81,7 +100,7 @@ namespace Engine {
 		}
 	}
 
-	bool GLSLShader::link() {
+	bool Shader::link() {
 		glAttachShader(program_id_, vertex_shader_id_);
 		glAttachShader(program_id_, fragment_shader_id_);
 		
@@ -114,12 +133,12 @@ namespace Engine {
 		return true;
 	}
 
-	void GLSLShader::addAttribute(const std::string & attribute_name) {
+	void Shader::addAttribute(const std::string & attribute_name) {
 		glBindAttribLocation(program_id_, num_attributes_, attribute_name.c_str());
 		num_attributes_++;
 	}
 
-	void GLSLShader::setUniform(const std::string &uniform_name, const float &v) {
+	void Shader::setUniform(const std::string &uniform_name, const float &v) {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
@@ -130,7 +149,7 @@ namespace Engine {
 		glUniform1f(location, v);
 	}
 
-	void GLSLShader::setUniform(const std::string &uniform_name, const glm::vec2 &v) {
+	void Shader::setUniform(const std::string &uniform_name, const glm::vec2 &v) {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
@@ -141,7 +160,7 @@ namespace Engine {
 		glUniform2fv(location, 1, &(v[0]));
 	}
 
-	void GLSLShader::setUniform(const std::string &uniform_name, const glm::vec3 &v) {
+	void Shader::setUniform(const std::string &uniform_name, const glm::vec3 &v) {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
@@ -152,7 +171,7 @@ namespace Engine {
 		glUniform3fv(location, 1, &(v[0]));
 	}
 
-	void GLSLShader::setUniform(const std::string &uniform_name, const glm::mat4 &v) {
+	void Shader::setUniform(const std::string &uniform_name, const glm::mat4 &v) {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
@@ -163,12 +182,12 @@ namespace Engine {
 		glUniformMatrix4fv(location, 1, GL_FALSE, &(v[0][0]));
 	}
 
-	bool GLSLShader::getUniformLocation(const std::string &uniform_name, GLuint &location) {
+	bool Shader::getUniformLocation(const std::string &uniform_name, GLuint &location) {
 		location = glGetUniformLocation(program_id_, uniform_name.c_str());
 		return location != GL_INVALID_INDEX;
 	}
 
-	bool GLSLShader::createProgram() {
+	bool Shader::createProgram() {
 		if (program_id_ != 0) {
 			glDeleteProgram(program_id_);
 		}
@@ -178,7 +197,7 @@ namespace Engine {
 		return program_id_ != 0;
 	}
 
-	bool GLSLShader::createShader(GLuint &shader_id, GLenum shader_type) {
+	bool Shader::createShader(GLuint &shader_id, GLenum shader_type) {
 		if (shader_id != 0) {
 			glDeleteShader(shader_id);
 		}
@@ -188,7 +207,7 @@ namespace Engine {
 		return shader_id != 0;
 	}
 
-	bool GLSLShader::compileShader(const char *shader_file_path, GLuint &shader_id) {
+	bool Shader::compileShader(const char *shader_file_path, GLuint &shader_id) {
 		std::string shader_contetns = IOManager::readFile(shader_file_path);
 		const char* shader_contetns_ptr = shader_contetns.c_str();
 

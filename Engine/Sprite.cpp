@@ -7,7 +7,7 @@ namespace Engine {
 	Sprite::Sprite() :
 		transform_(),
 		mesh_(),
-		shader_("../Engine/Shaders/default.vert", "../Engine/Shaders/default.frag")
+		material_()
 	{}
 
 	Sprite::~Sprite() {
@@ -15,12 +15,7 @@ namespace Engine {
 	}
 
 	void Sprite::init() {
-		shader_.init();
-
-		shader_.addAttribute("vertex_position");
-		shader_.addAttribute("vertex_normal");
-		shader_.addAttribute("vertex_uv");
-		shader_.addAttribute("vertex_color");
+		material_.init();
 
 		mesh_.begin();
 
@@ -64,7 +59,7 @@ namespace Engine {
 	}
 
 	void Sprite::render() {
-		shader_.bind();
+		material_.bind();
 
 		glm::mat4 model_matrix = transform_.getModelMatrix();
 		glm::mat4 view_matrix = pCameraManager->getMainCamera()->getInverseTransformMatrix();
@@ -72,11 +67,11 @@ namespace Engine {
 
 		glm::mat4 mvp = projection_matrix * view_matrix * model_matrix;
 
-		shader_.setUniform("MVP", mvp);
+		material_.shader_.setUniform("MVP", mvp);
 
 		mesh_.render();
 
-		shader_.unbind();
+		material_.unbind();
 	}
 
 	void Sprite::destroy() {

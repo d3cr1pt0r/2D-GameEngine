@@ -2,6 +2,7 @@
 #include <glew.h>
 #include <glm.hpp>
 #include <vector>
+#include "MeshResource.h"
 #include "Vertex.h"
 
 namespace Engine {
@@ -26,17 +27,10 @@ namespace Engine {
 		std::vector<unsigned int> indices_;
 
 	private:
-		void createVertexArrayAndBuffer();
 		void buildVertexData();
-		void uploadVertexData();
 
 	private:
-		GLuint ibo_;
-		GLuint vao_;
-		GLuint vbo_;
-
-		bool initialized_;
-
+		MeshResource mesh_resource_;
 		std::vector<Vertex> vertex_data_;
 	};
 }

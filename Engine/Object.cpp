@@ -8,10 +8,14 @@ namespace Engine {
 	Object::Object(const char *name) : name_(name) {
 		instance_id_ = object_count_;
 		object_count_++;
+
+		init();
 	}
 
 	Object::~Object() {
 		object_count_--;
+
+		deinit();
 	}
 
 	void Object::init() {
@@ -20,14 +24,6 @@ namespace Engine {
 
 	void Object::deinit() {
 		pObjectManager->removeObject(this);
-	}
-
-	Object* Object::instantiate()
-	{
-		Object *object = new Object("Object");
-		object->init();
-
-		return object;
 	}
 
 	const unsigned int& Object::getInstanceID() const {

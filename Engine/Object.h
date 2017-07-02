@@ -10,8 +10,6 @@ namespace Engine {
 		virtual void init();
 		virtual void deinit();
 
-		static Object* instantiate();
-
 		const unsigned int& getInstanceID() const;
 		const char* getName() const;
 

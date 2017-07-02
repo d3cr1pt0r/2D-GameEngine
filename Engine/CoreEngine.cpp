@@ -92,14 +92,7 @@ namespace Engine {
 	}
 
 	void CoreEngine::render() {
-		if (pCameraManager->getMainCamera() == 0) {
-			pLogManager->logError("CoreEngine", "No camera ready for rendering. Set main camera with Manager::getInstance()->camera_manager_.setMainCamera method!");
-			return;
-		}
-
-		pCameraManager->getMainCamera()->clear();
-		game_->render();
-		pWindowManager->swapBuffers();
+		pRenderManager->render();
 	}
 
 	void CoreEngine::destroy() {

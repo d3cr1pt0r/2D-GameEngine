@@ -8,7 +8,7 @@ namespace Engine {
 		~Object();
 
 		virtual void init();
-		virtual void destroy();
+		virtual void deinit();
 
 		static Object* instantiate();
 

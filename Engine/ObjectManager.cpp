@@ -7,7 +7,7 @@ namespace Engine {
 		pLogManager->logDebug("ObjectManager", "initialized");
 	}
 	
-	void ObjectManager::destroy() {
+	void ObjectManager::deinit() {
 		pLogManager->logDebug("ObjectManager", "destroyed");
 	}
 

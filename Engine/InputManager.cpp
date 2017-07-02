@@ -56,7 +56,7 @@ namespace Engine {
 		}
 	}
 
-	void InputManager::destroy() {
+	void InputManager::deinit() {
 		pLogManager->logDebug("InputManager", "destroyed");
 	}
 

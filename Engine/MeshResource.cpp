@@ -59,7 +59,7 @@ namespace Engine {
 		initialized_ = true;
 	}
 
-	void MeshResource::destroy() {
+	void MeshResource::deinit() {
 		if (vbo_ == 0) {
 			pLogManager->logError("MeshResource", "Failed to delete vertex buffer object.");
 			return;

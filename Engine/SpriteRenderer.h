@@ -12,7 +12,7 @@ namespace Engine {
 		~SpriteRenderer();
 		
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 		void render() override;
 
 	public:

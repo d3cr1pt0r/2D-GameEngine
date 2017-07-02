@@ -16,7 +16,7 @@ namespace Engine {
 	public:
 		void init() override;
 		void update();
-		void destroy() override;
+		void deinit() override;
 
 		bool getKey(int keycode);
 		bool getKeyUp(int keycode);

@@ -11,7 +11,7 @@ namespace Engine {
 		setMainCamera(default_camera_);
 	}
 
-	void CameraManager::destroy() {
+	void CameraManager::deinit() {
 		pLogManager->logDebug("CameraManager", "destroyed");
 	}
 

@@ -20,8 +20,8 @@ namespace Engine {
 		shader_.addAttribute("vertex_color");
 	}
 
-	void Material::destroy() {
-		shader_.destroy();
+	void Material::deinit() {
+		shader_.deinit();
 	}
 
 	void Material::bind() {

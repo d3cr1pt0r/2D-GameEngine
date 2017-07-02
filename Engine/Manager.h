@@ -20,7 +20,7 @@ namespace Engine {
 
 	public:
 		static void init();
-		static void destroy();
+		static void deinit();
 		static Manager* getInstance();
 
 	public:

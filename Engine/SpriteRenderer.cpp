@@ -9,7 +9,7 @@ namespace Engine {
 	}
 
 	SpriteRenderer::~SpriteRenderer() {
-		destroy();
+		deinit();
 	}
 
 	void SpriteRenderer::init() {
@@ -58,11 +58,11 @@ namespace Engine {
 		mesh_.end();
 	}
 
-	void SpriteRenderer::destroy() {
-		RenderableComponent::destroy();
+	void SpriteRenderer::deinit() {
+		RenderableComponent::deinit();
 
-		mesh_.destroy();
-		material_.destroy();
+		mesh_.deinit();
+		material_.deinit();
 	}
 
 	void SpriteRenderer::render() {

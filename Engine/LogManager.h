@@ -10,7 +10,7 @@ namespace Engine {
 
 	public:
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		inline void logDebug(const std::string &tag, const std::string &log) {
 			std::cout << "DEBUG: Engine<" << tag.c_str() << ">: " << log.c_str() << std::endl;

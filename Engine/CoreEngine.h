@@ -18,7 +18,7 @@ namespace Engine {
 	private:
 		void update(const float &frame_time);
 		void render();
-		void destroy();
+		void deinit();
 	private:
 		Game *game_;
 

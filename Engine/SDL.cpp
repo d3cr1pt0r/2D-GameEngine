@@ -15,7 +15,7 @@ namespace Engine {
 		return true;
 	}
 
-	void SDL::destroy() {
+	void SDL::deinit() {
 		SDL_Quit();
 	}
 }

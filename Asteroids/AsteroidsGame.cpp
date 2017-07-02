@@ -74,10 +74,10 @@ void AsteroidsGame::update(const float &delta_time) {
 	}
 }
 
-void AsteroidsGame::destroy() {
-	sprite_renderer_1->destroy();
-	sprite_renderer_2->destroy();
+void AsteroidsGame::deinit() {
+	sprite_renderer_1->deinit();
+	sprite_renderer_2->deinit();
 
-	game_object_1_->destroy();
-	game_object_2_->destroy();
+	game_object_1_->deinit();
+	game_object_2_->deinit();
 }

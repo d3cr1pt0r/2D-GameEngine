@@ -9,7 +9,7 @@ class AsteroidsGame : public Engine::Game {
 public:
 	void init() override;
 	void update(const float &delta_time) override;
-	void destroy() override;
+	void deinit() override;
 
 private:
 	Engine::Camera camera_;

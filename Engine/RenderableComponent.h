@@ -10,7 +10,7 @@ namespace Engine {
 		~RenderableComponent();
 
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		virtual void render() = 0;
 	};

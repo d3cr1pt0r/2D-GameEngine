@@ -28,13 +28,13 @@ namespace Engine {
 		}
 	}
 
-	void Manager::destroy() {
-		instance_->render_manager_->destroy();
-		instance_->camera_manager_->destroy();
-		instance_->object_manager_->destroy();
-		instance_->input_manager_->destroy();
-		instance_->window_manager_->destroy();
-		instance_->log_manager_->destroy();
+	void Manager::deinit() {
+		instance_->render_manager_->deinit();
+		instance_->camera_manager_->deinit();
+		instance_->object_manager_->deinit();
+		instance_->input_manager_->deinit();
+		instance_->window_manager_->deinit();
+		instance_->log_manager_->deinit();
 
 		delete instance_->render_manager_;
 		delete instance_->camera_manager_;

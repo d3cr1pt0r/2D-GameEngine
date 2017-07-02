@@ -8,7 +8,7 @@ namespace Engine {
 		pLogManager->logDebug("WindowManager", "initialized");
 	}
 
-	void WindowManager::destroy() {
+	void WindowManager::deinit() {
 		pLogManager->logDebug("WindowManager", "destroyed");
 
 		SDL_GL_DeleteContext(sdl_glcontext_);

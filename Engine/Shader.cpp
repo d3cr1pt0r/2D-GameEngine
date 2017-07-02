@@ -61,7 +61,7 @@ namespace Engine {
 		return link();
 	}
 
-	void Shader::destroy() {
+	void Shader::deinit() {
 		if (program_id_ == 0) {
 			pLogManager->logError("Shader", "Failed to destroy shader, program ID is 0");
 			return;

@@ -8,7 +8,7 @@ namespace Engine {
 
 	public:
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		void create(const char *title, int width, int height);
 		void swapBuffers();

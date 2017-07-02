@@ -6,6 +6,6 @@ namespace Engine {
 
 	public:
 		static bool init();
-		static void destroy();
+		static void deinit();
 	};
 }

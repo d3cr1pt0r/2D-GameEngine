@@ -6,7 +6,7 @@ namespace Engine {
 		logDebug("LogManager", "initialized");
 	}
 
-	void LogManager::destroy() {
+	void LogManager::deinit() {
 		logDebug("LogManager", "destroyed");
 	}
 }

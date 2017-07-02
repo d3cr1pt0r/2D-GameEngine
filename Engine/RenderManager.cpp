@@ -7,7 +7,7 @@ namespace Engine {
 		pLogManager->logDebug("RenderManager", "initialized");
 	}
 
-	void RenderManager::destroy() {
+	void RenderManager::deinit() {
 		pLogManager->logDebug("RenderManager", "destroyed");
 	}
 

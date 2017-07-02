@@ -12,7 +12,7 @@ namespace Engine {
 		~Component();
 
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 	public:
 		GameObject *game_object_;

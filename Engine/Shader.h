@@ -12,7 +12,7 @@ namespace Engine {
 		~Shader();
 
 		bool init();
-		void destroy();
+		void deinit();
 		void bind();
 		void unbind();
 		void addAttribute(const std::string &attribute_name);

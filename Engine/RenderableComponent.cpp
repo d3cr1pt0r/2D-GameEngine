@@ -13,7 +13,7 @@ namespace Engine {
 		pObjectManager->addRenderableComponent(this);
 	}
 
-	void RenderableComponent::destroy() {
+	void RenderableComponent::deinit() {
 		pObjectManager->removeRenderableComponent(this);
 	}
 }

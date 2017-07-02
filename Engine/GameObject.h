@@ -14,7 +14,7 @@ namespace Engine {
 		~GameObject();
 
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		void addComponent(Component *component);
 		void addComponent(RenderableComponent *renderable_component);

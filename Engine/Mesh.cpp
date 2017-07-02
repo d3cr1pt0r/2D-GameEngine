@@ -8,7 +8,7 @@ namespace Engine {
 	}
 
 	Mesh::~Mesh() {
-		destroy();
+		deinit();
 	}
 
 	void Mesh::begin() {
@@ -38,9 +38,9 @@ namespace Engine {
 		vertex_data_.clear();
 	}
 
-	void Mesh::destroy() {
+	void Mesh::deinit() {
 		clear();
-		mesh_resource_.destroy();
+		mesh_resource_.deinit();
 	}
 
 	void Mesh::buildVertexData() {

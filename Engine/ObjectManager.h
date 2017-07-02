@@ -15,7 +15,7 @@ namespace Engine {
 
 	public:
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		void addObject(Object *object);
 		void removeObject(const Object *object);

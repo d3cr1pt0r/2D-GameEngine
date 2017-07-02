@@ -12,7 +12,7 @@ namespace Engine {
 		~MeshResource();
 	
 		void init();
-		void destroy();
+		void deinit();
 		void bindVAO();
 		void unbindVAO();
 		void bindVBO();

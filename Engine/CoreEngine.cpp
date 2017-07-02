@@ -79,7 +79,7 @@ namespace Engine {
 			}
 		}
 
-		destroy();
+		deinit();
 	}
 
 	const float CoreEngine::getFramesPerSecond() const {
@@ -95,9 +95,9 @@ namespace Engine {
 		pRenderManager->render();
 	}
 
-	void CoreEngine::destroy() {
-		game_->destroy();
-		Manager::destroy();
-		SDL::destroy();
+	void CoreEngine::deinit() {
+		game_->deinit();
+		Manager::deinit();
+		SDL::deinit();
 	}
 }

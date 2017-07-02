@@ -17,7 +17,7 @@ namespace Engine {
 		void end();
 		void render();
 		void clear();
-		void destroy();
+		void deinit();
 
 	public:
 		std::vector<glm::vec3> vertices_;

@@ -18,7 +18,7 @@ namespace Engine {
 		pObjectManager->addObject(this);
 	}
 
-	void Object::destroy() {
+	void Object::deinit() {
 		pObjectManager->removeObject(this);
 	}
 

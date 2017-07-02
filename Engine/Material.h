@@ -11,7 +11,7 @@ namespace Engine {
 		~Material();
 
 		void init();
-		void destroy();
+		void deinit();
 
 		void bind();
 		void unbind();

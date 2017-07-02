@@ -15,7 +15,7 @@ namespace Engine {
 		pObjectManager->addComponent(this);
 	}
 
-	void Component::destroy() {
+	void Component::deinit() {
 		pObjectManager->removeComponent(this);
 	}
 }

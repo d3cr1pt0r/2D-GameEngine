@@ -8,7 +8,7 @@ namespace Engine {
 
 	public:
 		void init() override;
-		void destroy() override;
+		void deinit() override;
 
 		void setMainCamera(Camera &camera);
 		Camera* getMainCamera();

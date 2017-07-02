@@ -8,15 +8,15 @@ namespace Engine {
 	}
 
 	GameObject::~GameObject() {
-		destroy();
+		deinit();
 	}
 
 	void GameObject::init() {
 		Object::init();
 	}
 
-	void GameObject::destroy() {
-		Object::destroy();
+	void GameObject::deinit() {
+		Object::deinit();
 	}
 
 	void GameObject::addComponent(Component *component) {

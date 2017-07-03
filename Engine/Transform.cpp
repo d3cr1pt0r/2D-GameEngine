@@ -1,4 +1,7 @@
 #include "Transform.h"
+#include "Manager.h"
+#include "GameObject.h"
+
 #include <gtc\matrix_transform.hpp>
 #include <gtx\transform.hpp>
 
@@ -9,79 +12,148 @@ namespace Engine {
 	{}
 
 	Transform::Transform(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale) :
-		position_(position),
-		rotation_(rotation),
-		scale_(scale),
+		game_object_(0),
 		parent_(0),
-		trs_matrix_(1.0f),
-		identity_matrix_(1.0f)
-	{}
+		local_to_world_matrix_(1.0f),
+		world_to_local_matrix_(1.0f),
+		local_position_(position),
+		local_rotation_(rotation),
+		local_scale_(scale),
+		is_dirty_(true),
+		is_inverse_dirty_(true)
+	{
+	}
 
 
 	Transform::~Transform() {
+		
 	}
 
-	void Transform::setPosition(const glm::vec3 &position) {
-		position_ = position;
+	void Transform::setLocalPosition(const glm::vec3 &position) {
+		local_position_ = position;
+		setDirty();
 	}
 
-	void Transform::setRotation(const glm::vec3 &rotation) {
-		rotation_ = rotation;
+	void Transform::setLocalRotation(const glm::vec3 &rotation) {
+		local_rotation_ = rotation;
+		setDirty();
+	}
+
+	void Transform::setLocalScale(const glm::vec3 &scale) {
+		local_scale_ = scale;
+		setDirty();
 	}
 
 	void Transform::move(const glm::vec3 &v) {
-		position_ += v;
+		local_position_ += v;
+		setDirty();
 	}
 
 	void Transform::rotate(const glm::vec3 &v) {
-		rotation_ += v;
+		local_rotation_ += v;
+		setDirty();
 	}
 
 	void Transform::scale(const glm::vec3 &v) {
-		scale_ += v;
+		local_scale_ += v;
+		setDirty();
 	}
 
-	void Transform::addChild(Transform *transform) {
-		transform->setParent(this);
+	GameObject* Transform::getGameObject() const {
+		return game_object_;
+	}
+
+	void Transform::setGameObject(GameObject *game_object) {
+		game_object_ = game_object;
+	}
+
+	Transform * Transform::getParent() const {
+		return parent_;
 	}
 
 	void Transform::setParent(Transform *transform) {
+		if (parent_ != 0) {
+			parent_->removeChild(this);
+		}
+
 		parent_ = transform;
+		parent_->addChild(this);
+
+		setDirty();
 	}
 
-	void Transform::setScale(const glm::vec3 &scale) {
-		scale_ = scale;
+	void Transform::addChild(Transform *transform) {
+		children_.emplace(transform);
+	}
+
+	void Transform::removeChild(Transform *transform) {
+		children_.erase(transform);
 	}
 
 	glm::vec3& Transform::getPosition() {
-		return position_;
+		glm::mat4 m = getLocalToWorldMatrix();
+		glm::vec4 v = glm::vec4(local_position_.x, local_position_.y, local_position_.z, 1.0f);
+		glm::vec4 r = m * v;
+
+		return glm::vec3(r.x, r.y, r.z);
 	}
 
 	glm::vec3& Transform::getRotation() {
-		return rotation_;
+		return local_rotation_;
 	}
 
 	glm::vec3& Transform::getScale() {
-		return scale_;
+		return local_scale_;
 	}
 
-	glm::mat4& Transform::getModelMatrix() {
-		recalculateTRS();
-		return trs_matrix_;
+	glm::vec3 & Transform::getLocalPosition() {
+		return local_position_;
 	}
 
-	glm::mat4& Transform::getParentModelMatrix() {
-		if (parent_ != 0) {
-			return parent_->getModelMatrix();
+	glm::vec3 & Transform::getLocalRotation() {
+		return local_rotation_;
+	}
+	
+	glm::vec3 & Transform::getLocalScale() {
+		return local_scale_;
+	}
+
+	glm::mat4& Transform::getLocalToWorldMatrix() {
+		if (!is_dirty_) {
+			return local_to_world_matrix_;
 		}
-		return identity_matrix_;
+
+		if (parent_ == 0) {
+			local_to_world_matrix_ = glm::translate(local_position_) * glm::rotate(local_rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(local_scale_);
+		}
+		else {
+			local_to_world_matrix_ = parent_->getLocalToWorldMatrix() * glm::translate(local_position_) * glm::rotate(local_rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(local_scale_);
+		}
+
+		is_dirty_ = false;
+
+		return local_to_world_matrix_;
 	}
 
-	void Transform::recalculateTRS() {
-		glm::mat4 translation_matrix = glm::translate(position_);
-		glm::mat4 rotation_matrix = glm::rotate(rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 scale_matrix = glm::scale(scale_);
-		
-		trs_matrix_ = getParentModelMatrix() * translation_matrix * rotation_matrix * scale_matrix;
+	glm::mat4& Transform::getWorldToLocalMatrix() {
+		if (!is_inverse_dirty_) {
+			return world_to_local_matrix_;
+		}
+
+		world_to_local_matrix_ = glm::inverse(getLocalToWorldMatrix());
+		is_inverse_dirty_ = false;
+
+		return world_to_local_matrix_;
+	}
+
+	void Transform::setDirty() {
+		if (!is_dirty_) {
+			is_dirty_ = true;
+			is_inverse_dirty_ = true;
+
+			for (auto it = children_.begin(); it != children_.end(); ++it) {
+				(*it)->setDirty();
+			}
+		}
 	}
 }

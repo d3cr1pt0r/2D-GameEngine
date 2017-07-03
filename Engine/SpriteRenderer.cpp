@@ -68,7 +68,7 @@ namespace Engine {
 	void SpriteRenderer::render() {
 		material_.bind();
 
-		glm::mat4 model_matrix = game_object_->transform_.getModelMatrix();
+		glm::mat4 model_matrix = game_object_->transform_.getLocalToWorldMatrix();
 		glm::mat4 view_matrix = pCameraManager->getMainCamera()->getInverseTransformMatrix();
 		glm::mat4 projection_matrix = pCameraManager->getMainCamera()->getProjectionMatrix();
 

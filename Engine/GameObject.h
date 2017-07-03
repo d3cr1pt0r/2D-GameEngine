@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Transform.h"
+#include <vector>
 
 namespace Engine {
 
@@ -15,6 +16,8 @@ namespace Engine {
 
 		void init() override;
 		void deinit() override;
+
+		void setParent(GameObject *game_object);
 
 		void addComponent(Component *component);
 		void addComponent(RenderableComponent *renderable_component);

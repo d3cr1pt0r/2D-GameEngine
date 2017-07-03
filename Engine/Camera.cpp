@@ -65,11 +65,11 @@ namespace Engine {
 		return clear_color_;
 	}
 
-	glm::mat4 Camera::getProjectionMatrix() {
+	glm::mat4& Camera::getProjectionMatrix() {
 		return matrix_;
 	}
 
-	glm::mat4 Camera::getInverseTransformMatrix() {
-		return glm::inverse(transform_.getModelMatrix());
+	glm::mat4& Camera::getInverseTransformMatrix() {
+		return transform_.getWorldToLocalMatrix();
 	}
 }

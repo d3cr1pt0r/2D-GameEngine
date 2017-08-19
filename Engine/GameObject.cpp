@@ -1,6 +1,5 @@
 #include "GameObject.h"
-#include "Managers\ManagerSystem.h"
-#include "RenderableComponent.h"
+#include "Managers\ObjectManager.h"
 
 namespace Engine {
 
@@ -9,35 +8,23 @@ namespace Engine {
 	}
 
 	GameObject::GameObject(const char *name) : Object(name), transform_() {
-
-	}
-
-	GameObject::~GameObject() {
-
-	}
-
-	void GameObject::init() {
-		Object::init();
-
 		transform_.setGameObject(this);
 	}
 
-	void GameObject::deinit() {
-		Object::deinit();
-
+	GameObject::~GameObject() {
 		transform_.setGameObject(0);
 	}
 
-	void GameObject::setParent(GameObject *game_object) {
+	void GameObject::setParent(GameObject* game_object) {
 		transform_.setParent(&game_object->transform_);
 	}
 
-	void GameObject::addComponent(Component *component) {
-		component->game_object_ = this;
-	}
+	void GameObject::destroy() {
+		for (int i = 0; i < components_.size(); i++) {
+			components_[i]->onDestroy();
+		}
 
-	void GameObject::addComponent(RenderableComponent *renderable_component) {
-		renderable_component->game_object_ = this;
+		delete this;
 	}
 }
 

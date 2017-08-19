@@ -10,14 +10,14 @@ namespace Engine {
 		CameraManager();
 		~CameraManager();
 
-		void setupCamera(float width, float height);
+		void setupDefaultCamera(float width, float height);
 
 		Camera* getMainCamera();
 		void setMainCamera(Camera &camera);
 
 	private:
-		Camera default_camera_;
-		Camera *camera_;
+		GameObject* camera_game_object_ = nullptr;
+		Camera* camera_component_ = nullptr;
 	};
 
 	extern CameraManager* pCameraManager;

@@ -9,10 +9,11 @@ namespace Engine {
 		RenderableComponent();
 		~RenderableComponent();
 
-		void init() override;
-		void deinit() override;
+		void onCreate() override;
+		void onUpdate() override;
+		void onDestroy() override;
 
-		virtual void render() = 0;
+		virtual void onRender() = 0;
 	};
 }
 

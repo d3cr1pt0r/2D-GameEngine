@@ -30,7 +30,7 @@ namespace Engine {
 		pCameraManager->getMainCamera()->clear();
 
 		for (auto it = pObjectManager->getRenderableComponents().begin(); it != pObjectManager->getRenderableComponents().end(); ++it) {
-			it->second->render();
+			it->second->onRender();
 		}
 
 		pDeviceManager->swapBuffers();

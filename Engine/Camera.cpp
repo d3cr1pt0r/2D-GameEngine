@@ -1,14 +1,12 @@
 #include "Camera.h"
-#include "Managers\ManagerSystem.h"
+
 #include <glew.h>
+#include "GameObject.h"
 
 namespace Engine {
 
-	Camera::Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {
-	}
-
-	Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation) :
-		GameObject("Camera"),
+	Camera::Camera() :
+		Component("Camera"),
 		clear_color_(),
 		matrix_(),
 		width_(800.0f),
@@ -18,11 +16,21 @@ namespace Engine {
 		far_plane_(100.0f),
 		scale_(1.0f)
 	{
-		transform_.setLocalPosition(position);
-		transform_.setLocalRotation(rotation);
 	}
 
 	Camera::~Camera() {
+	}
+
+	void Camera::onCreate() {
+		Component::onCreate();
+	}
+
+	void Camera::onUpdate() {
+		Component::onUpdate();
+	}
+
+	void Camera::onDestroy() {
+		Component::onDestroy();
 	}
 
 	void Camera::clear() {
@@ -71,6 +79,6 @@ namespace Engine {
 	}
 
 	glm::mat4& Camera::getInverseTransformMatrix() {
-		return transform_.getWorldToLocalMatrix();
+		return getGameObject()->transform_.getWorldToLocalMatrix();
 	}
 }

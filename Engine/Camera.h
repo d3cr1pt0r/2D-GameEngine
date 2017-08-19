@@ -1,17 +1,21 @@
 #pragma once
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
-#include "GameObject.h"
+
+#include "Component.h"
 #include "Color.h"
 
 namespace Engine {
 
-	class Camera : public GameObject{
+	class Camera : public Component {
 
 	public:
 		Camera();
-		Camera(const glm::vec3 &position, const glm::vec3 &rotation);
 		~Camera();
+
+		void onCreate() override;
+		void onUpdate() override;
+		void onDestroy() override;
 
 		void clear();
 

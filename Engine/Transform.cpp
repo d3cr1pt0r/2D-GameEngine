@@ -1,5 +1,5 @@
 #include "Transform.h"
-#include "Manager.h"
+#include "Managers\ManagerSystem.h"
 #include "GameObject.h"
 
 #include <gtc\matrix_transform.hpp>
@@ -23,7 +23,6 @@ namespace Engine {
 		is_inverse_dirty_(true)
 	{
 	}
-
 
 	Transform::~Transform() {
 		
@@ -90,7 +89,7 @@ namespace Engine {
 		children_.erase(transform);
 	}
 
-	glm::vec3& Transform::getPosition() {
+	glm::vec3 Transform::getPosition() {
 		glm::mat4 m = getLocalToWorldMatrix();
 		glm::vec4 v = glm::vec4(local_position_.x, local_position_.y, local_position_.z, 1.0f);
 		glm::vec4 r = m * v;
@@ -123,11 +122,19 @@ namespace Engine {
 			return local_to_world_matrix_;
 		}
 
+		glm::mat4 t = glm::translate(local_position_);
+		glm::mat4 r = glm::rotate(local_rotation_.x, glm::vec3(1.0f, 0.0f, 0.0f));
+		r = glm::rotate(r, local_rotation_.y, glm::vec3(0.0f, 1.0f, 0.0f));
+		r = glm::rotate(r, local_rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 s = glm::scale(local_scale_);
+
+		glm::mat4 trs = t * r * s;
+
 		if (parent_ == 0) {
-			local_to_world_matrix_ = glm::translate(local_position_) * glm::rotate(local_rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(local_scale_);
+			local_to_world_matrix_ = trs;
 		}
 		else {
-			local_to_world_matrix_ = parent_->getLocalToWorldMatrix() * glm::translate(local_position_) * glm::rotate(local_rotation_.z, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::scale(local_scale_);
+			local_to_world_matrix_ = parent_->getLocalToWorldMatrix() * trs;
 		}
 
 		is_dirty_ = false;

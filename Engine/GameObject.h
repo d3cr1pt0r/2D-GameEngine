@@ -11,6 +11,7 @@ namespace Engine {
 	class GameObject : public Object {
 
 	public:
+		GameObject();
 		GameObject(const char *name);
 		~GameObject();
 

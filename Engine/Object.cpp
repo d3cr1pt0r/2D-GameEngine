@@ -1,5 +1,5 @@
 #include "Object.h"
-#include "Manager.h"
+#include "Managers\ManagerSystem.h"
 
 namespace Engine {
 
@@ -19,11 +19,11 @@ namespace Engine {
 	}
 
 	void Object::init() {
-		pObjectManager->addObject(this);
+
 	}
 
 	void Object::deinit() {
-		pObjectManager->removeObject(this);
+
 	}
 
 	const unsigned int& Object::getInstanceID() const {

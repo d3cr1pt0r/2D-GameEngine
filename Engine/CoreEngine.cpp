@@ -1,16 +1,25 @@
 #include "CoreEngine.h"
+
 #include "SDL.h"
-#include "Manager.h"
+#include "Managers\ManagerSystem.h"
+#include "Managers\LogManager.h"
+#include "Managers\DeviceManager.h"
+#include "Managers\InputManager.h"
+#include "Managers\ObjectManager.h"
+#include "Managers\CameraManager.h"
+#include "Managers\RenderManager.h"
 
 namespace Engine {
-	CoreEngine::CoreEngine(Game *game, const char *title, int width, int height, double frames_per_second) :
-		game_(game),
-		frames_per_second_limit_(frames_per_second),
+
+	CoreEngine::CoreEngine(const char *title, int width, int height, double frames_per_second) :
 		title_(title),
 		width_(width),
-		height_(height) {}
-
-
+		height_(height) ,
+		frames_per_second_limit_(frames_per_second)
+	{
+		
+	}
+	
 	CoreEngine::~CoreEngine() {
 	}
 
@@ -21,19 +30,30 @@ namespace Engine {
 			return false;
 		}
 
-		// initialize main manager
-		Manager::init();
+		// register managers
+		ManagerSystem::getInstance().registerManager<LogManager>();
+		ManagerSystem::getInstance().registerManager<DeviceManager>();
+		ManagerSystem::getInstance().registerManager<InputManager>();
+		ManagerSystem::getInstance().registerManager<ObjectManager>();
+		ManagerSystem::getInstance().registerManager<CameraManager>();
+		ManagerSystem::getInstance().registerManager<RenderManager>();
 
-		// create main window
-		pWindowManager->create(title_, width_, height_);
-
-		// after all managers are initialized, we can init our game
-		game_->init();
+		// initialize core manager stuff
+		pDeviceManager->createWindow(title_, width_, height_);
+		pCameraManager->setupCamera((float)pDeviceManager->getWindowWidth(), (float)pDeviceManager->getWindowHeight());
 
 		return true;
 	}
 
+	void CoreEngine::deinit() {
+		game_->deinit();
+		ManagerSystem::getInstance().unregisterManagers();
+		SDL::deinit();
+	}
+
 	void CoreEngine::run() {
+		game_->init();
+
 		bool should_render;
 
 		int frames = 0;
@@ -78,12 +98,26 @@ namespace Engine {
 				SDL_Delay(1);
 			}
 		}
+	}
 
-		deinit();
+	const char * CoreEngine::getTitle() const {
+		return title_;
+	}
+
+	const int& CoreEngine::getWidth() const {
+		return width_;
+	}
+
+	const int& CoreEngine::getHeight() const {
+		return height_;
 	}
 
 	const float CoreEngine::getFramesPerSecond() const {
 		return (float) frames_per_second_;
+	}
+
+	void CoreEngine::setGame(Game* game) {
+		game_ = game;
 	}
 
 	void CoreEngine::update(const float &frame_time) {
@@ -93,11 +127,5 @@ namespace Engine {
 
 	void CoreEngine::render() {
 		pRenderManager->render();
-	}
-
-	void CoreEngine::deinit() {
-		game_->deinit();
-		Manager::deinit();
-		SDL::deinit();
 	}
 }

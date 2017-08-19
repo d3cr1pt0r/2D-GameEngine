@@ -3,8 +3,8 @@
 #include <fstream>
 #include <vector>
 
-#include "Manager.h"
-#include "IOManager.h"
+#include "Managers\LogManager.h"
+#include "Managers\IOManager.h"
 
 namespace Engine {
 
@@ -142,7 +142,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: %s", uniform_name);
 			return;
 		}
 
@@ -153,7 +153,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: %s", uniform_name);
 			return;
 		}
 
@@ -164,7 +164,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: %s", uniform_name);
 			return;
 		}
 
@@ -175,7 +175,7 @@ namespace Engine {
 		GLuint location;
 
 		if (!getUniformLocation(uniform_name, location)) {
-			pLogManager->logError("GLSLShader", "Failed to get uniform location: " + uniform_name);
+			pLogManager->logError("GLSLShader", "Failed to get uniform location: %s", uniform_name);
 			return;
 		}
 

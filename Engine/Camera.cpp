@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Manager.h"
+#include "Managers\ManagerSystem.h"
 #include <glew.h>
 
 namespace Engine {
@@ -8,7 +8,7 @@ namespace Engine {
 	}
 
 	Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation) :
-		transform_(position, rotation, glm::vec3(1.0f)),
+		GameObject("Camera"),
 		clear_color_(),
 		matrix_(),
 		width_(800.0f),
@@ -18,7 +18,8 @@ namespace Engine {
 		far_plane_(100.0f),
 		scale_(1.0f)
 	{
-
+		transform_.setLocalPosition(position);
+		transform_.setLocalRotation(rotation);
 	}
 
 	Camera::~Camera() {
@@ -37,7 +38,7 @@ namespace Engine {
 		far_plane_ = far_plane;
 		scale_ = scale;
 
-		matrix_ = glm::ortho(0.0f, width_, 0.0f, height_, near_plane_, far_plane_);
+		matrix_ = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, near_plane_, far_plane_);
 	}
 
 	void Camera::setToPerspective(const float &width, const float &height, const float &fov, const float &near_plane, const float &far_plane) {

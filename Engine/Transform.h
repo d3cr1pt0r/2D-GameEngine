@@ -31,7 +31,7 @@ namespace Engine {
 		void addChild(Transform *transform);
 		void removeChild(Transform *transform);
 
-		glm::vec3& getPosition();
+		glm::vec3 getPosition();
 		glm::vec3& getScale();
 		glm::vec3& getRotation();
 

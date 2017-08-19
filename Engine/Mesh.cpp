@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "Manager.h"
+#include "Managers\LogManager.h"
 
 namespace Engine {
 
@@ -49,10 +49,6 @@ namespace Engine {
 
 		if (!size_check) {
 			pLogManager->logError("Mesh", "Vertex data lengths don't match. Make sure vertices, normals, uvs and colors are the same size!");
-			pLogManager->logFloat("Mesh:vertices_size", (float) vertices_.size());
-			pLogManager->logFloat("Mesh:normals_size", (float) normals_.size());
-			pLogManager->logFloat("Mesh:uvs_size", (float) uvs_.size());
-			pLogManager->logFloat("Mesh:colors_size", (float) colors_.size());
 			return;
 		}
 

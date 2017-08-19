@@ -1,6 +1,6 @@
 #include "MeshResource.h"
 #include "Vertex.h"
-#include "Manager.h"
+#include "Managers\LogManager.h"
 
 #include <cstddef>
 

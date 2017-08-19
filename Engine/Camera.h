@@ -1,12 +1,12 @@
 #pragma once
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
-#include "Transform.h"
+#include "GameObject.h"
 #include "Color.h"
 
 namespace Engine {
 
-	class Camera {
+	class Camera : public GameObject{
 
 	public:
 		Camera();
@@ -25,9 +25,6 @@ namespace Engine {
 
 		glm::mat4& getProjectionMatrix();
 		glm::mat4& getInverseTransformMatrix();
-
-	public:
-		Transform transform_;
 
 	private:
 		Color clear_color_;

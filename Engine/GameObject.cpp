@@ -1,14 +1,19 @@
 #include "GameObject.h"
-#include "Manager.h"
+#include "Managers\ManagerSystem.h"
+#include "RenderableComponent.h"
 
 namespace Engine {
 
+	GameObject::GameObject() : GameObject("GameObject") {
+
+	}
+
 	GameObject::GameObject(const char *name) : Object(name), transform_() {
-		init();
+
 	}
 
 	GameObject::~GameObject() {
-		deinit();
+
 	}
 
 	void GameObject::init() {

@@ -1,6 +1,6 @@
 #include "SpriteRenderer.h"
-#include "Manager.h"
 #include "GameObject.h"
+#include "Managers\CameraManager.h"
 
 namespace Engine {
 

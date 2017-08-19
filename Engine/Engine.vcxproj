@@ -19,57 +19,63 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CoreEngine.cpp" />
+    <ClCompile Include="CoreEngineSettings.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Managers\BaseManager.cpp" />
+    <ClCompile Include="Managers\CameraManager.cpp" />
+    <ClCompile Include="Managers\DeviceManager.cpp" />
+    <ClCompile Include="Managers\InputManager.cpp" />
+    <ClCompile Include="Managers\IOManager.cpp" />
+    <ClCompile Include="Managers\LogManager.cpp" />
+    <ClCompile Include="Managers\ManagerSystem.cpp" />
+    <ClCompile Include="Managers\ObjectManager.cpp" />
+    <ClCompile Include="Managers\RenderManager.cpp" />
     <ClCompile Include="MeshResource.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="RenderableComponent.cpp" />
-    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="IOManager.cpp" />
-    <ClCompile Include="LogManager.cpp" />
-    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SDL.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseManager.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CoreEngine.h" />
+    <ClInclude Include="CoreEngineSettings.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="IOManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="INonCopyable.h" />
+    <ClInclude Include="Managers\BaseManager.h" />
+    <ClInclude Include="Managers\CameraManager.h" />
+    <ClInclude Include="Managers\DeviceManager.h" />
+    <ClInclude Include="Managers\InputManager.h" />
+    <ClInclude Include="Managers\IOManager.h" />
+    <ClInclude Include="Managers\LogManager.h" />
+    <ClInclude Include="Managers\ManagerSystem.h" />
+    <ClInclude Include="Managers\ObjectManager.h" />
+    <ClInclude Include="Managers\RenderManager.h" />
     <ClInclude Include="MeshResource.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="RenderableComponent.h" />
-    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="LogManager.h" />
-    <ClInclude Include="Manager.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SDL.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

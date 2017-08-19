@@ -11,5 +11,5 @@ uniform mat4 MVP;
 
 void main() {
 	fragment_color = vertex_color;
-	gl_Position = MVP * vec4(vertex_position.x, vertex_position.y, 0.0, 1.0);
+	gl_Position = MVP * vec4(vertex_position.xyz, 1.0);
 }

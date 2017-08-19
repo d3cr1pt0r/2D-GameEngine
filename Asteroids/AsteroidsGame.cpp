@@ -3,14 +3,15 @@
 #include <iostream>
 #include <glm.hpp>
 
-#include <Engine/Manager.h>
+#include <Engine/Managers/CameraManager.h>
+#include <Engine/Managers/DeviceManager.h>
+#include <Engine/Managers/InputManager.h>
 #include <Engine/GameObject.h>
 #include <Engine/SpriteRenderer.h>
 #include <Engine/Color.h>
 
 void AsteroidsGame::init() {
-	int width = Engine::pWindowManager->getWidth();
-	int height = Engine::pWindowManager->getHeight();
+	Engine::pCameraManager->getMainCamera()->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 
 	game_object_1_ = new Engine::GameObject("GameObject 1");
 	game_object_2_ = new Engine::GameObject("GameObject 2");
@@ -21,12 +22,13 @@ void AsteroidsGame::init() {
 	game_object_1_->addComponent(sprite_renderer_1);
 	game_object_2_->addComponent(sprite_renderer_2);
 
-	game_object_1_->transform_.setLocalPosition(glm::vec3(width * 0.5f, height * 0.5f, 0.0f));
-	game_object_1_->transform_.setLocalScale(glm::vec3(10.0f, 10.0f, 10.0f));
+	game_object_1_->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	game_object_1_->transform_.setLocalScale(glm::vec3(1.0f, 1.0f, 1.0f));
 	sprite_renderer_1->color_ = Engine::Color(0.0, 1.0, 0.0, 1.0);
 
-	game_object_2_->transform_.setLocalPosition(glm::vec3(10.0f, 10.0f, 0.0f));
-	game_object_2_->transform_.setLocalScale(glm::vec3(10.0f, 10.0f, 10.0f));
+	game_object_2_->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	game_object_2_->transform_.setLocalScale(glm::vec3(1.0f, 1.0f, 1.0f));
+	game_object_2_->transform_.setLocalRotation(glm::vec3(0.0f, 30.0f, 0.0f));
 	sprite_renderer_1->color_ = Engine::Color(0.0, 0.0, 1.0, 1.0);
 
 	game_object_2_->setParent(game_object_1_);
@@ -43,16 +45,16 @@ void AsteroidsGame::update(const float &delta_time) {
 	}
 
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_W)) {
-		game_object_1_->transform_.move(glm::vec3(0.0f, 0.0f, delta_time * speed));
+		game_object_1_->transform_.move(glm::vec3(0.0f, delta_time, 0.0f));
 	}
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_S)) {
-		game_object_1_->transform_.move(glm::vec3(0.0f, 0.0f, -delta_time * speed));
+		game_object_1_->transform_.move(glm::vec3(0.0f, -delta_time, 0.0f));
 	}
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_A)) {
-		game_object_1_->transform_.move(glm::vec3(-delta_time * speed, 0.0f, 0.0f));
+		game_object_1_->transform_.move(glm::vec3(-delta_time, 0.0f, 0.0f));
 	}
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_D)) {
-		game_object_1_->transform_.move(glm::vec3(delta_time * speed, 0.0f, 0.0f));
+		game_object_1_->transform_.move(glm::vec3(delta_time, 0.0f, 0.0f));
 	}
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_Q)) {
 		game_object_1_->transform_.rotate(glm::vec3(0.0f, 0.0f, -delta_time));
@@ -67,14 +69,28 @@ void AsteroidsGame::update(const float &delta_time) {
 	if (Engine::pInputManager->getKey(SDL_SCANCODE_3)) {
 		game_object_1_->transform_.scale(glm::vec3(delta_time * 10.0f, delta_time * 10.0f, 0.0f));
 	}
+	if (Engine::pInputManager->getKey(SDL_SCANCODE_4)) {
+		game_object_1_->transform_.rotate(glm::vec3(delta_time * 2.0f, 0.0f, 0.0f));
+	}
+	if (Engine::pInputManager->getKey(SDL_SCANCODE_5)) {
+		game_object_1_->transform_.rotate(glm::vec3(-delta_time * 2.0f, 0.0f, 0.0f));
+	}
+	if (Engine::pInputManager->getKey(SDL_SCANCODE_6)) {
+		game_object_1_->transform_.rotate(glm::vec3(0.0f, delta_time * 2.0f, 0.0f));
+	}
+	if (Engine::pInputManager->getKey(SDL_SCANCODE_7)) {
+		game_object_1_->transform_.rotate(glm::vec3(0.0f, -delta_time * 2.0f, 0.0f));
+	}
 
 	if (drag_mode_) {
-		int w = Engine::pWindowManager->getWidth();
-		int h = Engine::pWindowManager->getHeight();
+		int w = Engine::pDeviceManager->getWindowWidth();
+		int h = Engine::pDeviceManager->getWindowHeight();
 
 		glm::vec3 mouse_position = glm::vec3(Engine::pInputManager->getMousePosition().x, Engine::pInputManager->getMousePosition().y, 0.0f);
-		game_object_1_->transform_.setLocalPosition(glm::vec3(mouse_position.x, mouse_position.y, 0.0f));
+		game_object_1_->transform_.setLocalPosition(glm::vec3(mouse_position.x, mouse_position.y, -25.0f));
 	}
+
+	glm::vec3 camera_pos = Engine::pCameraManager->getMainCamera()->transform_.getLocalPosition();
 }
 
 void AsteroidsGame::deinit() {

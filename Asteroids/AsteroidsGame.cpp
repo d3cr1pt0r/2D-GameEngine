@@ -6,21 +6,20 @@
 #include <Engine/Managers/CameraManager.h>
 #include <Engine/Managers/DeviceManager.h>
 #include <Engine/Managers/InputManager.h>
-#include <Engine/GameObject.h>
-#include <Engine/SpriteRenderer.h>
+#include <Engine/Managers/ObjectManager.h>
 #include <Engine/Color.h>
 
 void AsteroidsGame::init() {
-	Engine::pCameraManager->getMainCamera()->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 5.0f));
+	Engine::pCameraManager->getMainCamera()->getGameObject()->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 
-	game_object_1_ = new Engine::GameObject("GameObject 1");
-	game_object_2_ = new Engine::GameObject("GameObject 2");
+	game_object_1_ = Engine::pObjectManager->createGameObject("GameObject 1");
+	game_object_2_ = Engine::pObjectManager->createGameObject("GameObject 2");
 
-	sprite_renderer_1 = new Engine::SpriteRenderer(Engine::Color(0.0f, 1.0f, 0.0f, 1.0f));
-	sprite_renderer_2 = new Engine::SpriteRenderer(Engine::Color(0.0f, 0.0f, 1.0f, 1.0f));
+	sprite_renderer_1 = game_object_1_->addComponent<Engine::SpriteRenderer>();
+	sprite_renderer_2 = game_object_2_->addComponent<Engine::SpriteRenderer>();
 
-	game_object_1_->addComponent(sprite_renderer_1);
-	game_object_2_->addComponent(sprite_renderer_2);
+	sprite_renderer_1->setColor(Engine::Color(0.0f, 1.0f, 0.0f, 1.0f));
+	sprite_renderer_2->setColor(Engine::Color(1.0f, 0.0f, 0.0f, 1.0f));
 
 	game_object_1_->transform_.setLocalPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	game_object_1_->transform_.setLocalScale(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -89,14 +88,8 @@ void AsteroidsGame::update(const float &delta_time) {
 		glm::vec3 mouse_position = glm::vec3(Engine::pInputManager->getMousePosition().x, Engine::pInputManager->getMousePosition().y, 0.0f);
 		game_object_1_->transform_.setLocalPosition(glm::vec3(mouse_position.x, mouse_position.y, -25.0f));
 	}
-
-	glm::vec3 camera_pos = Engine::pCameraManager->getMainCamera()->transform_.getLocalPosition();
 }
 
 void AsteroidsGame::deinit() {
-	sprite_renderer_1->deinit();
-	sprite_renderer_2->deinit();
-
-	game_object_1_->deinit();
-	game_object_2_->deinit();
+	
 }

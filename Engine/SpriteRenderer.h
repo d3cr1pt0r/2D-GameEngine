@@ -8,12 +8,15 @@ namespace Engine {
 
 	class SpriteRenderer : public RenderableComponent {
 	public:
-		SpriteRenderer(const Color &color);
+		SpriteRenderer();
 		~SpriteRenderer();
 		
-		void init() override;
-		void deinit() override;
-		void render() override;
+		void onCreate() override;
+		void onDestroy() override;
+		void onRender() override;
+
+		void setColor(const Color& color);
+		void rebuildMesh();
 
 	public:
 		Color color_;

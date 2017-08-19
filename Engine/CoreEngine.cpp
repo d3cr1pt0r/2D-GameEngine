@@ -40,7 +40,7 @@ namespace Engine {
 
 		// initialize core manager stuff
 		pDeviceManager->createWindow(title_, width_, height_);
-		pCameraManager->setupCamera((float)pDeviceManager->getWindowWidth(), (float)pDeviceManager->getWindowHeight());
+		pCameraManager->setupDefaultCamera((float)pDeviceManager->getWindowWidth(), (float)pDeviceManager->getWindowHeight());
 
 		return true;
 	}

@@ -5,15 +5,12 @@ namespace Engine {
 
 	public:
 		Object(const char *name);
-		~Object();
-
-		virtual void init();
-		virtual void deinit();
+		virtual ~Object();
 
 		const unsigned int& getInstanceID() const;
 		const char* getName() const;
 
-	private:
+	protected:
 		static unsigned int object_count_;
 		unsigned int instance_id_;
 		const char *name_;

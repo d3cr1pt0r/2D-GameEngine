@@ -8,22 +8,10 @@ namespace Engine {
 	Object::Object(const char *name) : name_(name) {
 		instance_id_ = object_count_;
 		object_count_++;
-
-		init();
 	}
 
 	Object::~Object() {
 		object_count_--;
-
-		deinit();
-	}
-
-	void Object::init() {
-
-	}
-
-	void Object::deinit() {
-
 	}
 
 	const unsigned int& Object::getInstanceID() const {

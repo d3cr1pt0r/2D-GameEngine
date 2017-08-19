@@ -1,21 +1,26 @@
 #pragma once
 #include "Object.h"
+#include "IComponent.h"
 
 namespace Engine {
 
 	class GameObject;
 
-	class Component : public Object {
+	class Component : public Object, public IComponent {
 	
 	public:
 		Component(const char *name);
-		~Component();
+		virtual ~Component();
 
-		void init() override;
-		void deinit() override;
+		virtual void onCreate() override;
+		virtual void onUpdate() override;
+		virtual void onDestroy() override;
 
-	public:
-		GameObject *game_object_;
+		GameObject* getGameObject();
+		void setGameObject(GameObject* game_object);
+
+	private:
+		GameObject* game_object_;
 	};
 }
 

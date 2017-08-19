@@ -4,18 +4,30 @@
 namespace Engine {
 
 	Component::Component(const char *name) : Object(name) {
-		
+
 	}
 
 	Component::~Component() {
-		
+
 	}
 
-	void Component::init() {
+	void Component::onCreate() {
 		pObjectManager->addComponent(this);
 	}
 
-	void Component::deinit() {
+	void Component::onUpdate() {
+
+	}
+
+	void Component::onDestroy() {
 		pObjectManager->removeComponent(this);
+	}
+
+	GameObject* Component::getGameObject() {
+		return game_object_;
+	}
+
+	void Component::setGameObject(GameObject* game_object) {
+		game_object_ = game_object;
 	}
 }

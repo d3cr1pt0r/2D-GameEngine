@@ -1,0 +1,20 @@
+#pragma once
+
+enum Layers {
+	LAYER_0 = 1,
+	LAYER_1 = 2,
+	LAYER_2 = 4,
+	LAYER_3 = 8,
+	LAYER_4 = 16,
+	LAYER_5 = 32,
+	LAYER_6 = 64,
+	LAYER_7 = 128,
+	LAYER_8 = 256,
+	LAYER_9 = 512,
+	LAYER_10 = 1024,
+	LAYER_11 = 2048,
+	LAYER_12 = 4096,
+	LAYER_13 = 8192,
+	LAYER_14 = 16384,
+	LAYER_15 = 32768,
+};
